@@ -6,10 +6,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 
-import { require } from '../common/utils.mjs';
+import { require } from './lib/utils.mjs';
+
+// INIT
 
 if( process.env.NODE_ENV !== 'production' ) dotenv.config();
-// INIT
+
+//import './services/db.js';
 
 const app = express();
 const server = http.createServer(app);

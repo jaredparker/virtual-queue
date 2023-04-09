@@ -2,8 +2,8 @@
 import express from "express";
 const router = express.Router();
 
-import { require } from '../common/utils.mjs';
-import { user_roles } from '../common/enums.mjs';
+import { require } from './lib/utils.mjs';
+import { user_roles } from './lib/enums.mjs';
 
 // ROUTES (/v1/...)
 
