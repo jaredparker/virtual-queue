@@ -6,8 +6,9 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 
-if( process.env.NODE_ENV !== 'production' ) dotenv.config();
+import { require } from '../common/utils.mjs';
 
+if( process.env.NODE_ENV !== 'production' ) dotenv.config();
 // INIT
 
 const app = express();
@@ -22,6 +23,8 @@ app.use( cookieParser() );
 app.get( '/', ( req, res ) => {
     res.status(200).json({ 'foo': 'bar' });
 });
+
+app.use( '/v1', await require('./app.js') );
 
 // START SERVER
 
