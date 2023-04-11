@@ -25,7 +25,7 @@ const jwtRefreshPublicKey = getKey( 'jwt-refresh-public' );
 const jwtAccessPublicKey = getKey( 'jwt-access-public' );
 const jwtIdentityPublicKey = getKey( 'jwt-identity-public' );
 
-// # JSON Web Token creation
+// ### JWT Creation and Verification ###
 
 function createToken( payload, privateKey, expiresIn='15m' ){
     return jwt.sign(
@@ -38,21 +38,6 @@ function createToken( payload, privateKey, expiresIn='15m' ){
     );
 }
 
-// User accounts
-async function createRefreshToken( payload, expiresIn='7d' ){
-    const refreshToken = createToken( payload, jwtRefreshPrivateKey, expiresIn );
-
-    // Save refresh token to database
-    await User.updateOne({ _id: payload.id }, { $push: { refreshTokens: refreshToken } });
-
-    return refreshToken;
-}
-function createAccessToken( payload, expiresIn='15m' ){
-    return createToken( payload, jwtAccessPrivateKey, expiresIn );
-}
-
-// # JSON Web Token verification
-
 function verifyToken( token, publicKey ){
     return jwt.verify(
         token,
@@ -61,8 +46,24 @@ function verifyToken( token, publicKey ){
     );
 }
 
-// # Helpers
+// # Shortcuts #
 
+async function createRefreshToken( payload, expiresIn='7d' ){
+    const refreshToken = createToken( payload, jwtRefreshPrivateKey, expiresIn );
+
+    // Save refresh token to database
+    await User.updateOne({ _id: payload.id }, { $push: { refreshTokens: refreshToken } });
+
+    return refreshToken;
+}
+
+function createAccessToken( payload, expiresIn='15m' ){
+    return createToken( payload, jwtAccessPrivateKey, expiresIn );
+}
+
+// # Authentication Tokens Creation, Sending & Rotation #
+
+// Send tokens to client
 function createTokenCookie( name, token, expiresIn, req, res ){
     
     const cookieOptions = {
@@ -74,7 +75,24 @@ function createTokenCookie( name, token, expiresIn, req, res ){
     res.cookie( name, token, cookieOptions );
 }
 
-async function rotateRefreshToken( refreshToken, expiresIn='7d' ){
+async function createSendAuthTokens( payload, req, res ){
+
+    const refreshExpiry = payload.role === user_roles.ANONYMOUS
+        ? { text: '1y', milis: 31_536_000_000 } // 1 year: 365 * 24 * 60 * 60 * 1000
+        : { text: '7d', milis: 604_800_000 }; // 7 days: 7 * 24 * 60 * 60 * 1000
+
+    // Create tokens
+    const refreshToken = await createRefreshToken( payload, refreshExpiry.text );
+    const accessToken  = createAccessToken( payload );
+
+    // Send tokens
+    createTokenCookie( 'refresh-token', refreshToken, refreshExpiry.milis, req, res ); // 7 days: 7 * 24 * 60 * 60 * 1000
+    createTokenCookie( 'access-token', accessToken, 900_000, req, res ); // 15 minutes: 15 * 60 * 1000
+
+    return [ refreshToken, accessToken ];
+}
+
+async function rotateRefreshToken( refreshToken, req, res ){
     const oldPayload = verifyToken( refreshToken, jwtRefreshPublicKey ); // Validation expected to be done before this function is called
     const newPayload = { id: oldPayload.id, role: oldPayload.role };
 
@@ -91,13 +109,10 @@ async function rotateRefreshToken( refreshToken, expiresIn='7d' ){
     // Remove old refresh token from database (invalidate use)
     await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: refreshToken } });
 
-    const newRefreshToken = await createRefreshToken( newPayload, expiresIn );
-    const newAccessToken  = createAccessToken( newPayload );
-
-    return [ newAccessToken, newRefreshToken ];
+    return await createSendAuthTokens( newPayload, req, res );
 }
 
-// # Handlers
+// ### Middleware/Handlers ###
 
 export async function register( req, res, next ){
 
@@ -110,9 +125,8 @@ export async function register( req, res, next ){
     try { await user.save(); }
     catch( error ){ return res.failed( 'Invalid Details' ) }
 
-    // Login user
-    //login( ...arguments );
-    next();
+    // ~ Auto Login user as next middleware
+    next(); // login( ...arguments );
 }
 
 export async function login( req, res ){
@@ -127,19 +141,12 @@ export async function login( req, res ){
 
     // Check if password matched
 
-    // Create tokens
+    // Create & Send tokens
     const payload = { id: user.id, role: user.role };
-    const refreshToken = await createRefreshToken( payload );
-    const accessToken = createAccessToken( payload );
-
-    // Send tokens
-    createTokenCookie( 'refresh-token', refreshToken, 604_800_000, req, res ); // 7 days: 7 * 24 * 60 * 60 * 1000
-    createTokenCookie( 'access-token', accessToken, 900_000, req, res ); // 15 minutes: 15 * 60 * 1000
+    await createSendAuthTokens( payload, req, res );
 
     res.success( 'Logged in' );
 }
-
-// # Middleware
 
 // Check authentication based on role
 export function roles(){
@@ -157,13 +164,9 @@ export function roles(){
             try{ refreshPayload = verifyToken( refreshToken, jwtRefreshPublicKey );
             } catch( error ){ return res.unauthorized( 'Invalid refresh token' ); }
 
-            // Create Access token and Rotate refresh token
-            [ accessToken, refreshToken ] = await rotateRefreshToken( refreshToken );
+            // Create Access token, Rotate refresh token & Send tokens
+            [ refreshToken, accessToken ] = await rotateRefreshToken( refreshToken, req, res );
             if( accessToken == null ) return res.unauthorized( 'Invalid refresh token' ); // Reuse detected
-
-            // Send tokens
-            createTokenCookie( 'refresh-token', refreshToken, 604_800_000, req, res ); // 7 days: 7 * 24 * 60 * 60 * 1000
-            createTokenCookie( 'access-token', accessToken, 900_000, req, res ); // 15 minutes: 15 * 60 * 1000
 
             return false; // no errors occured
         }
