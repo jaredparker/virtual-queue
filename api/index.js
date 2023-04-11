@@ -12,7 +12,7 @@ import { require } from './lib/utils.js';
 
 if( process.env.NODE_ENV !== 'production' ) dotenv.config();
 
-//import './services/db.js';
+import './services/db.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -21,10 +21,12 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use( cookieParser() );
 
+app.use( await require('./middleware/responses.js') );
+
 // ROUTES (/...)
 
 app.get( '/', ( req, res ) => {
-    res.status(200).json({ 'foo': 'bar' });
+    res.data({ 'foo': 'bar' });
 });
 
 app.use( '/v1', await require('./app.js') );

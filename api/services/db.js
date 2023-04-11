@@ -1,5 +1,8 @@
 
 import mongoose from 'mongoose';
+import * as dotenv from 'dotenv';
+
+if( process.env.NODE_ENV !== 'production' ) dotenv.config();
 
 // DataBase init
 
