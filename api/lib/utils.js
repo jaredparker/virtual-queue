@@ -1,5 +1,6 @@
 
-import path from "path";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 function _getCallerDir() {
     const originalFunc = Error.prepareStackTrace;
@@ -27,6 +28,12 @@ function _getCallerDir() {
     return callerDir;
 }
 
+// Dynamic import of module default
 export const require = async ( module ) => {
     return await import( path.join( _getCallerDir(), module ) ).then( moduleNamespace => moduleNamespace.default );
+}
+
+// Get current directory
+export function getDirname( metaURL ){
+    return path.dirname( fileURLToPath( metaURL ) );
 }

@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 
-import { require } from './lib/utils.mjs';
+import { require } from './lib/utils.js';
 
 // INIT
 
