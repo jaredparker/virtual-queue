@@ -17,13 +17,11 @@ function getKey( key ){
 
 // Private Keys
 const jwtRefreshPrivateKey = getKey( 'jwt-refresh-private' );
-const jwtAccessPrivateKey = getKey( 'jwt-access-private' );
-const jwtIdentityPrivateKey = getKey( 'jwt-identity-private' );
+const jwtAccessPrivateKey  = getKey( 'jwt-access-private' );
 
 // Public Keys
 const jwtRefreshPublicKey = getKey( 'jwt-refresh-public' );
-const jwtAccessPublicKey = getKey( 'jwt-access-public' );
-const jwtIdentityPublicKey = getKey( 'jwt-identity-public' );
+const jwtAccessPublicKey  = getKey( 'jwt-access-public' );
 
 // ### JWT Creation and Verification ###
 
@@ -96,7 +94,6 @@ async function rotateRefreshToken( refreshToken, req, res ){
     const oldPayload = verifyToken( refreshToken, jwtRefreshPublicKey ); // Validation expected to be done before this function is called
     const newPayload = { id: oldPayload.id, role: oldPayload.role };
 
-    // TODO: Add validation with database for reuse detection
     const foundUser = await User.findOne({ refreshTokens: refreshToken });
 
     // Reuse detected, revoke tokens
