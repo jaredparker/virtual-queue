@@ -137,6 +137,7 @@ export async function login( req, res ){
     if( !user ) return res.failed( 'Invalid username or password' );
 
     // Check if password matched
+    if( !await user.comparePassword( password ) ) return res.failed( 'Invalid username or password' );
 
     // Create & Send tokens
     const payload = { id: user.id, role: user.role };

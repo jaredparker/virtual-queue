@@ -1,5 +1,6 @@
 
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 import { user_roles } from '../lib/enums.js';
 
 const userSchema = new mongoose.Schema({
@@ -16,7 +17,9 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
 
-    // TODO: encrypt password
+    password: {
+        type: String
+    },
 
     name: {
         type: String,
@@ -33,5 +36,17 @@ const userSchema = new mongoose.Schema({
         type: [String],
     }
 });
+
+// Encrypt password
+userSchema.pre('save', async function( next ){
+    if( !this.password || !this.isModified('password') ){ return next(); }
+  
+    this.password = await bcrypt.hash( this.password, 10 );
+    next();
+});
+
+userSchema.methods.comparePassword = async function( password ){
+    return await bcrypt.compare( password, this.password );
+};
 
 export default mongoose.model( 'user', userSchema );
