@@ -14,7 +14,7 @@ import styles from '@/styles/pages/Home.module.scss';
 import * as api from '@/services/api';
 import ErrorBox from "@/components/ErrorBox";
 
-export default function Login(){
+export default function LoginPage(){
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);

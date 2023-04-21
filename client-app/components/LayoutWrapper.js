@@ -3,18 +3,17 @@ import formatClasses from '@/utils/formatClasses';
 
 import styles from '@/styles/components/LayoutWrapper.module.scss';
 
-export default function LayoutWrapper({ children, centreContent=false, fillHeight=false }){
+export default function LayoutWrapper({ children, centreContent=false, fillHeight=false, className }){
 
-    // const className = centreContent ? [styles.wrapper, styles.centre] : styles.wrapper;
-
-    const className = formatClasses({
+    const classes = formatClasses({
         [styles.wrapper]: true,
         [styles.centre]: centreContent,
-        [styles.fill]: fillHeight
+        [styles.fill]: fillHeight,
+        [className]: true
     });
 
     return (
-        <div className={className}>
+        <div className={classes}>
             {children}
         </div>
     )
