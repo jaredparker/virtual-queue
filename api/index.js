@@ -20,8 +20,18 @@ const server = http.createServer(app);
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use( cookieParser() );
-
 app.use( await require('./middleware/responses.js') );
+
+const corsWhitelist = process.env.APP_ORIGINS.split(',');
+app.use( async ( req, res, next ) => {
+    cors({ credentials: true, origin: ( origin, cb ) => {
+        if( corsWhitelist.indexOf(origin) !== -1 || !origin ){
+            cb( null, true );
+        } else {
+            res.noAccess( 'Not allowed by CORS' );
+        }
+    }})( req, res, next )
+});
 
 // ROUTES (/...)
 
