@@ -35,5 +35,5 @@ export async function login( email, password ){
 }
 
 export async function register( email, password ){
-    return await fetchApi( '/auth/register', 'POST', { email, password } );
+    return await fetchApi( '/auth/register/user', 'POST', { email, password } );
 }
