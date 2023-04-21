@@ -117,13 +117,54 @@ export async function register( req, res, next ){
     const { email, password } = req.body;
     if( !email || !password ) return res.failed( 'Missing Username or Password' );
 
-    const user = new User({ email, password, role: user_roles.STANDARD });
+    // Check if user has an anonymous account, if so upgrade to standard
+    const anonymousUser = await (async () => {
 
-    try { await user.save(); }
-    catch( error ){ return res.failed( 'Invalid Details' ) }
+        let refreshToken = req.cookies['refresh-token'];
+        if( !refreshToken ) return null;
+        
+        let payload;
+        try{ payload = verifyToken( refreshToken, jwtRefreshPublicKey ); }
+        catch( err ){ return null; } // If token expired, anonymous user account is no longer accessible
+
+        const user = await User.findOne({ _id: payload.id });
+
+        if( user.role !== user_roles.ANONYMOUS ) return null;
+
+        return user;
+    })();
+
+    // Register user
+
+    if( anonymousUser ){
+        anonymousUser.email = email;
+        anonymousUser.password = password;
+        anonymousUser.role = user_roles.STANDARD;
+        await anonymousUser.save();
+    }
+    else {
+        const user = new User({ email, password, role: user_roles.STANDARD });
+
+        try { await user.save(); }
+        catch( error ){ return res.failed( 'Invalid Details' ); }
+    }
 
     // ~ Auto Login user as next middleware
     next(); // login( ...arguments );
+}
+
+export async function createAnonymousUser( req, res ){
+
+    // Create anonymous user
+    const user = new User({ role: user_roles.ANONYMOUS });
+    try { await user.save(); }
+    catch( error ){ return res.failed( 'Something went wrong' ); }
+
+    // Create & Send tokens
+    const payload = { id: user.id, role: user.role };
+    await createSendAuthTokens( payload, req, res );
+
+    res.success( 'Anonymous user created' );
 }
 
 export async function login( req, res ){
@@ -144,6 +185,27 @@ export async function login( req, res ){
     await createSendAuthTokens( payload, req, res );
 
     res.success( 'Logged in' );
+}
+
+export async function logout( req, res ){
+
+    // Get refresh token
+    const refreshToken = req.cookies['refresh-token'];
+    if( !refreshToken ) return res.failed( 'Missing refresh token' );
+
+    // Verify token
+    let payload;
+    try{ payload = verifyToken( refreshToken, jwtRefreshPublicKey );
+    } catch( error ){ return res.failed( 'Invalid refresh token' ); }
+
+    // Remove refresh token from database (invalidate use)
+    await User.updateOne({ _id: payload.id }, { $pull: { refreshTokens: refreshToken } });
+
+    // Remove tokens from client
+    res.clearCookie( 'refresh-token' );
+    res.clearCookie( 'access-token' );
+
+    res.success( 'Logged out' );
 }
 
 // Check authentication based on role

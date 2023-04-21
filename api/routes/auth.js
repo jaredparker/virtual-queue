@@ -8,7 +8,8 @@ const router = express.Router();
 // ROUTES (/v1/auth/...)
 
 router.post( '/login', auth.login );
-
-router.post( '/register', auth.register, auth.login );
+router.post( '/logout', auth.logout );
+router.post( '/register/user', auth.register, auth.login );
+router.post( '/register/anonymous', auth.createAnonymousUser );
 
 export default router;
