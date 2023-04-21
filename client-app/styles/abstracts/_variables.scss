@@ -1,0 +1,35 @@
+
+// - Colors -
+
+$color-primary: #4834d4;
+$color-primary-foreground: #fff;
+$color-primary-background: lighten( $color-primary, 40% );
+
+$color-background: #fff;
+$color-background-light: #e5e5e5;;
+$color-foreground: #000;
+$color-foreground-light: #777;
+
+$color-error: #ee5253;
+$color-error-foreground: #fff;
+$color-error-background: lighten( $color-error, 30% );
+
+// - Sizing -
+
+$font-size-small: 12px;
+$font-size-medium: 16px;
+$font-size-large: 20px;
+
+$padd-tiny: 5px;
+$padd-small: 15px;
+$padd-large: 25px;
+
+$border-radius: 5px;
+
+$box-small: 35px;
+$box-medium: 50px;
+
+// - Timings -
+
+$transition-quick: .1s;
+$transition-normal: .3s;

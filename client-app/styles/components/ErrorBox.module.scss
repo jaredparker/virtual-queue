@@ -1,0 +1,13 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.error {
+
+    padding: $padd-small;
+
+    @include reset-border;
+
+    color: $color-error;
+    background-color: $color-error-background;
+}

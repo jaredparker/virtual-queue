@@ -1,0 +1,13 @@
+
+
+@mixin reset-border {
+    border: none;
+    border-radius: $border-radius;
+}
+
+@mixin reset-focus {
+    &:focus {
+        outline: none;
+        background-color: $color-primary-background;
+    }
+}

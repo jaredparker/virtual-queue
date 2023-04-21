@@ -1,0 +1,40 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.button,
+.subButton {
+    width: 100%;
+
+    text-align: center;
+    font-size: $font-size-large;
+
+    @include reset-border;
+
+    transition: background-color $transition-quick;
+}
+
+.button {
+    height: $box-medium;
+
+    line-height: $box-medium;
+
+    color: $color-primary-foreground;
+    background-color: $color-primary;
+}
+.button:active {
+    background-color: darken($color-primary, 10%);
+}
+
+.subButton {
+    height: $box-small;
+
+    line-height: $box-small;
+
+    color: $color-primary;
+    background-color: $color-primary-background;
+}
+.subButton:active {
+    color: darken($color-primary, 10%);
+    background-color: darken($color-primary-background, 5%);
+}

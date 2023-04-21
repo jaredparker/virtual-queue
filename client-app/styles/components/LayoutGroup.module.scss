@@ -1,0 +1,31 @@
+
+@import '@/styles/abstracts/variables';
+
+.group {
+
+    &.gapSmall {
+        > *:not(:last-child) {
+            margin-bottom: $padd-tiny;
+        }
+    }
+    &.gapMedium {
+        > *:not(:last-child) {
+            margin-bottom: $padd-small;
+        }
+    }
+    &.gapLarge {
+        > *:not(:last-child) {
+            margin-bottom: $padd-large;
+        }
+    }
+
+    &.marginSmall {
+        margin: $padd-small 0;
+    }
+    &.marginMedium {
+        margin: $padd-small 0;
+    }
+    &.marginLarge {
+        margin: $padd-large 0;
+    }
+}

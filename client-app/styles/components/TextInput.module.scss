@@ -1,0 +1,26 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.label {
+    display: block;
+
+    font-size: $font-size-medium;
+
+    color: $color-foreground;
+}
+
+.input {
+    display: block;
+
+    width: 100%;
+    height: $box-medium;
+    padding: $padd-small;
+
+    font-size: $font-size-large;
+    
+    @include reset-border;
+    @include reset-focus;
+
+    background-color: $color-background-light;
+}
