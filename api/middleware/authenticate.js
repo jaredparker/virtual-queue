@@ -75,6 +75,18 @@ function createTokenCookie( name, token, expiresIn, req, res ){
 
 async function createSendAuthTokens( payload, req, res ){
 
+    // Invalidate old login
+    await ( async () => {
+        const oldRefreshToken = req.cookies['refresh-token'];
+        if( !oldRefreshToken ) return;
+        
+        let oldPayload;
+        try{ oldPayload = verifyToken( oldRefreshToken, jwtRefreshPublicKey, { ignoreExpiration: true } );
+        } catch( error ){ return; }
+
+        await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: oldRefreshToken } });
+    })();
+
     const refreshExpiry = payload.role === user_roles.ANONYMOUS
         ? { text: '1y', milis: 31_536_000_000 } // 1 year: 365 * 24 * 60 * 60 * 1000
         : { text: '7d', milis: 604_800_000 }; // 7 days: 7 * 24 * 60 * 60 * 1000
@@ -128,6 +140,7 @@ export async function register( req, res, next ){
         catch( err ){ return null; } // If token expired, anonymous user account is no longer accessible
 
         const user = await User.findOne({ _id: payload.id });
+        if( !user ) return null;
 
         if( user.role !== user_roles.ANONYMOUS ) return null;
 
@@ -197,6 +210,8 @@ export async function logout( req, res ){
     let payload;
     try{ payload = verifyToken( refreshToken, jwtRefreshPublicKey );
     } catch( error ){ return res.failed( 'Invalid refresh token' ); }
+
+    if( payload.role == user_roles.ANONYMOUS ) return res.failed( 'Cannot logout anonymous user. Delete account instead' );
 
     // Remove refresh token from database (invalidate use)
     await User.updateOne({ _id: payload.id }, { $pull: { refreshTokens: refreshToken } });
