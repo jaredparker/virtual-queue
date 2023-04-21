@@ -25,7 +25,7 @@ app.use( await require('./middleware/responses.js') );
 const corsWhitelist = process.env.APP_ORIGINS.split(',');
 app.use( async ( req, res, next ) => {
     cors({ credentials: true, origin: ( origin, cb ) => {
-        if( corsWhitelist.indexOf(origin) !== -1 || !origin ){
+        if( corsWhitelist.indexOf(origin) !== -1 || !origin || process.env.NODE_ENV !== 'production' ){
             cb( null, true );
         } else {
             res.noAccess( 'Not allowed by CORS' );

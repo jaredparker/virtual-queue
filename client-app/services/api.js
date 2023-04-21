@@ -3,9 +3,9 @@ import axios from 'axios';
 
 // # UTILS
 
-const api = (process.env.NODE_ENV == 'production')
-    ? route => `${process.env.API_DOMAIN}/${process.env.NEXT_PUBLIC_API_VERSION}${route}`
-    : route => `http://localhost:4000/${process.env.NEXT_PUBLIC_API_VERSION}${route}`;
+const hostname = ( process.env.NEXT_PUBLIC_API_DOMAIN ) ? process.env.NEXT_PUBLIC_API_DOMAIN : 'http://localhost:4000';
+
+const api = route => `${hostname}/${process.env.NEXT_PUBLIC_API_VERSION}${route}`;
 
 async function fetchApi( route, method='GET', data ){
 
