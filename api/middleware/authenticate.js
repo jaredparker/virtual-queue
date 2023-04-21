@@ -148,19 +148,20 @@ export async function register( req, res, next ){
     })();
 
     // Register user
+    let user;
 
     if( anonymousUser ){
         anonymousUser.email = email;
         anonymousUser.password = password;
         anonymousUser.role = user_roles.STANDARD;
-        await anonymousUser.save();
+        user = anonymousUser;
     }
     else {
-        const user = new User({ email, password, role: user_roles.STANDARD });
-
-        try { await user.save(); }
-        catch( error ){ return res.failed( 'Invalid Details' ); }
+        user = new User({ email, password, role: user_roles.STANDARD });
     }
+
+    try { await user.save(); }
+    catch( error ){ return res.failed( 'Invalid Details' ); }
 
     // ~ Auto Login user as next middleware
     next(); // login( ...arguments );
