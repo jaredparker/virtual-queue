@@ -1,8 +1,14 @@
 
 @import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
 
 .wrapper {
+    position: relative;
+
     width: 100%;
+    border-radius: $border-radius * 2;
+
+    background-color: $color-background;
 
     > * {
         padding: $padd-small;
@@ -17,4 +23,29 @@
         flex-direction: column;
         justify-content: center;
     }
+
+    z-index: 1;
+    overflow-y: auto;
+}
+
+.headerPlaceholder {
+    width: 100%;
+    height: $box-xlarge;
+}
+
+.header {
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: $box-xlarge + $border-radius * 2;
+
+    padding: $padd-small;
+    padding-bottom: $padd-small + $border-radius * 2;
+
+    color: $color-secondary-foreground;
+    @include image-overlay;
 }

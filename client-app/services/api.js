@@ -19,10 +19,15 @@ async function fetchApi( route, method='GET', data ){
     }
     if( method == 'POST' ){ options.body = JSON.stringify(data); }
 
-    const res = await fetch( api(route), options );
+    let response;
+    try { response = await fetch( api(route), options );
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: 'Network error' };
+    }
 
-    const result = await res.json();
-    console.log(result);
+    const result = await response.json();
+    if( process.env.NODE_ENV !== 'production' ) console.log(result);
     return result;
 }
 
@@ -36,4 +41,14 @@ export async function login( email, password ){
 
 export async function register( email, password ){
     return await fetchApi( '/auth/register/user', 'POST', { email, password } );
+}
+
+// - Queues
+
+export async function getQueues(){
+    return await fetchApi( '/queues/get' );
+}
+
+export async function getGroup( id ){
+    return await fetchApi( `/queues/get/group/${id}` );
 }

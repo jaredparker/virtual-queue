@@ -1,0 +1,36 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.header {
+    font-size: $font-size-large;
+    color: $color-primary;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: $box-large;
+    padding: $padd-small;
+
+    @include reset-border;
+
+    color: $color-secondary-foreground;
+    
+    @include image-overlay;
+}
+
+.title {
+    font-size: $font-size-large;
+    @include text-shadow;
+}
+.subtitle {
+    font-size: $font-size-medium;
+    @include text-shadow;
+}
+
+.icon {
+    font-size: $icon-small;
+}

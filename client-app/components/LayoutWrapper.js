@@ -1,9 +1,12 @@
 
+import LayoutGroup from './LayoutGroup';
+
 import formatClasses from '@/utils/formatClasses';
 
 import styles from '@/styles/components/LayoutWrapper.module.scss';
+import imageVar from '@/utils/imageVar';
 
-export default function LayoutWrapper({ children, centreContent=false, fillHeight=false, className }){
+export default function LayoutWrapper({ children, centreContent=false, fillHeight=false, className='', bannerImage, header }){
 
     const classes = formatClasses({
         [styles.wrapper]: true,
@@ -13,8 +16,16 @@ export default function LayoutWrapper({ children, centreContent=false, fillHeigh
     });
 
     return (
-        <div className={classes}>
-            {children}
-        </div>
+        <>
+            { header && <>
+                <div className={styles.headerPlaceholder}/>
+                <div className={styles.header} style={imageVar( bannerImage )}>
+                    { header }
+                </div>
+            </> }
+            <div className={classes}>
+                {children}
+            </div>
+        </>
     )
 }

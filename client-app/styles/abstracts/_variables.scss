@@ -5,8 +5,12 @@ $color-primary: #4834d4;
 $color-primary-foreground: #fff;
 $color-primary-background: lighten( $color-primary, 40% );
 
+$color-secondary: darken( $color-primary, 40% );
+$color-secondary-foreground: #fff;
+$color-secondary-background: lighten( $color-secondary, 40% );
+
 $color-background: #fff;
-$color-background-light: #e5e5e5;;
+$color-background-light: #eaeaea;;
 $color-foreground: #000;
 $color-foreground-light: #777;
 
@@ -28,9 +32,12 @@ $border-radius: 5px;
 
 $box-small: 35px;
 $box-medium: 50px;
-$box-large: 80px;
+$box-large: 60px;
+$box-xlarge: 80px;
 
-$icon-medium: 40px;
+$icon-small: 20px;
+$icon-medium: 25px;
+$icon-large: 30px;
 
 // - Timings -
 

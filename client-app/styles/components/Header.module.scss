@@ -1,0 +1,39 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100%;
+
+    color: $color-secondary-foreground;
+
+    .headerText {
+        flex: 1;
+    }
+
+    .title {
+        font-size: $font-size-large;
+        @include text-shadow;
+    }
+
+    .button {
+        @include centre-content;
+        @include reset-border;
+
+        height: 100%;
+
+        color: $color-secondary-foreground;
+        background: none;
+
+        font-size: $icon-medium;
+    }
+
+    > *:not(:last-child) {
+        margin-right: $padd-tiny;
+    }
+}
