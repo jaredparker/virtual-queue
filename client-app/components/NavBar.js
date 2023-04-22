@@ -1,5 +1,6 @@
 
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { HiOutlineTicket, HiMagnifyingGlass, HiOutlineCamera } from 'react-icons/hi2';
 
@@ -42,10 +43,10 @@ export default function NavBar({ children, centreContent=false, fillHeight=false
                     });
 
                     return (
-                        <a className={_classes} key={index} href={item.link}>
+                        <Link className={_classes} key={index} href={item.link}>
                             <item.icon className={styles.icon}/>
                             <p>{item.name}</p>
-                        </a>
+                        </Link>
                     )
 
                 }) }
