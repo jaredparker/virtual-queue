@@ -104,7 +104,6 @@ async function createSendAuthTokens( payload, req, res ){
 
 async function rotateRefreshToken( refreshToken, req, res ){
     const oldPayload = verifyToken( refreshToken, jwtRefreshPublicKey ); // Validation expected to be done before this function is called
-    const newPayload = { id: oldPayload.id, role: oldPayload.role };
 
     const foundUser = await User.findOne({ refreshTokens: refreshToken });
 
@@ -118,6 +117,8 @@ async function rotateRefreshToken( refreshToken, req, res ){
     // Remove old refresh token from database (invalidate use)
     await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: refreshToken } });
 
+    const newPayload = { id: foundUser.id, role: foundUser.role };
+    
     return await createSendAuthTokens( newPayload, req, res );
 }
 
