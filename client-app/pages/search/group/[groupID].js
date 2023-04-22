@@ -56,7 +56,9 @@ export default function GroupPage(){
             <LayoutWrapper fillHeight={true} bannerImage={group.bannerImage} header={
                 <Header title={group.name}/>
             }>
-                { renderCardGroups( cardGroups ) }
+                <LayoutGroup gapSize='medium'>
+                    { renderCardGroups( cardGroups ) }
+                </LayoutGroup>
             </LayoutWrapper>
 
             <NavBar/>

@@ -43,9 +43,9 @@ export default function SearchPage(){
             </Head>
             
             <LayoutWrapper fillHeight={true}>
-
-                { renderCardGroups( cardGroups ) }
-
+                <LayoutGroup gapSize='medium'>
+                    { renderCardGroups( cardGroups ) }
+                </LayoutGroup>
             </LayoutWrapper>
 
             <NavBar/>
