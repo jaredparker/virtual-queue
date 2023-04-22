@@ -11,7 +11,7 @@ import { user_roles } from './lib/enums.js';
 
 router.use( '/auth', await require('./routes/auth.js') );
 
-router.use( '/queues', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD ), await require('./routes/queues.js') );
+router.use( '/queues', await require('./routes/queues.js') );
 //router.use( '/tickets', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD ), await require('./routes/auth.js') );
 
 export default router;

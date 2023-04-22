@@ -7,6 +7,11 @@ export default function responsesMiddleware( req, res, next ){
 
     res.failed = ( message='' ) =>
         res.status( 400 ).json({ success: false, message } );
+    
+    res.missingParams = ( params ) => {
+        const details = Object.keys( params ).filter( key => !params[ key ] );
+        return res.status( 400 ).json({ success: false, message: 'Missing parameters', details } );
+    }
 
     res.unauthorized = ( details='' ) =>
         res.status( 401 ).json({ success: false, message: 'Unauthorized', details } );
