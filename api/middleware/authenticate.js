@@ -75,18 +75,6 @@ function createTokenCookie( name, token, expiresIn, req, res ){
 
 async function createSendAuthTokens( payload, req, res ){
 
-    // Invalidate old login
-    await ( async () => {
-        const oldRefreshToken = req.cookies['refresh-token'];
-        if( !oldRefreshToken ) return;
-        
-        let oldPayload;
-        try{ oldPayload = verifyToken( oldRefreshToken, jwtRefreshPublicKey, { ignoreExpiration: true } );
-        } catch( error ){ return; }
-
-        await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: oldRefreshToken } });
-    })();
-
     const refreshExpiry = payload.role === user_roles.ANONYMOUS
         ? { text: '1y', milis: 31_536_000_000 } // 1 year: 365 * 24 * 60 * 60 * 1000
         : { text: '7d', milis: 604_800_000 }; // 7 days: 7 * 24 * 60 * 60 * 1000
@@ -104,6 +92,7 @@ async function createSendAuthTokens( payload, req, res ){
 
 async function rotateRefreshToken( refreshToken, req, res ){
     const oldPayload = verifyToken( refreshToken, jwtRefreshPublicKey ); // Validation expected to be done before this function is called
+    const newPayload = { id: oldPayload.id, role: oldPayload.role };
 
     const foundUser = await User.findOne({ refreshTokens: refreshToken });
 
@@ -117,8 +106,9 @@ async function rotateRefreshToken( refreshToken, req, res ){
     // Remove old refresh token from database (invalidate use)
     await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: refreshToken } });
 
-    const newPayload = { id: foundUser.id, role: foundUser.role };
-    
+    // User role changed, require re-login
+    if( foundUser.role !== newPayload.role ) return [ null, null ];
+
     return await createSendAuthTokens( newPayload, req, res );
 }
 
@@ -194,6 +184,18 @@ export async function login( req, res ){
 
     // Check if password matched
     if( !await user.comparePassword( password ) ) return res.failed( 'Invalid username or password' );
+
+    // Invalidate old login
+    await ( async () => {
+        const oldRefreshToken = req.cookies['refresh-token'];
+        if( !oldRefreshToken ) return;
+        
+        let oldPayload;
+        try{ oldPayload = verifyToken( oldRefreshToken, jwtRefreshPublicKey, { ignoreExpiration: true } );
+        } catch( error ){ return; }
+
+        await User.updateOne({ _id: oldPayload.id }, { $pull: { refreshTokens: oldRefreshToken } });
+    })();
 
     // Create & Send tokens
     const payload = { id: user.id, role: user.role };
