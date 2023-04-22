@@ -19,7 +19,7 @@ const queueSchema = new mongoose.Schema({
     },
 
     // e.g. "Parks", "Rides"
-    catergory: {
+    category: {
         default: '',
         type: String
     },
@@ -37,5 +37,16 @@ const queueSchema = new mongoose.Schema({
     // ... other fields
 
 });
+
+queueSchema.methods.export = function(){
+    return {
+        type: 'queue',
+        id: this.id,
+        name: this.name,
+        category: this.category,
+        location: this.location,
+        bannerImage: this.bannerImage
+    };
+}
 
 export default mongoose.model( 'queue', queueSchema );

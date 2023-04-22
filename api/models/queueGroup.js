@@ -18,7 +18,7 @@ const queueGroupSchema = new mongoose.Schema({
     },
 
     // e.g. "Parks", "Rides"
-    catergory: {
+    category: {
         default: '',
         type: String
     },
@@ -44,5 +44,16 @@ const queueGroupSchema = new mongoose.Schema({
     }],
 
 });
+
+queueGroupSchema.methods.export = function(){
+    return {
+        type: 'group',
+        id: this.id,
+        name: this.name,
+        category: this.category,
+        location: this.location,
+        bannerImage: this.bannerImage
+    };
+}
 
 export default mongoose.model( 'queueGroup', queueGroupSchema );

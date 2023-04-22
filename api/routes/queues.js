@@ -9,6 +9,30 @@ import Queue from '../models/queue.js';
 
 const router = express.Router();
 
+// ROUTE PARAMS
+
+router.param('groupID', async ( req, res, next, value ) => {
+
+    try{ req.group = await Group.findOne({ _id: value }); }
+    catch( err ){ return res.notFound(); }
+
+    // Group ID is invalid
+    if( !req.group ){ return res.notFound(); }
+
+    next();
+});
+
+router.param('queueID', async ( req, res, next, value ) => {
+
+    try{ req.queue = await Queue.findOne({ _id: value }); }
+    catch( err ){ return res.notFound(); }
+
+    // Queue ID is invalid
+    if( !req.group ){ return res.notFound(); }
+
+    next();
+});
+
 // ADMIN ROUTES (/v1/queues/...)
 
 router.post(
@@ -75,7 +99,39 @@ router.get(
     async ( req, res ) => {
 
         const groups = await Group.find({ parent: { $exists: false } });
-        console.log( groups );
+
+        // Build response
+        const responseData = groups.map( group => {
+            return {
+                type: 'group',
+                id: group.id,
+                name: group.name,
+                category: group.category,
+                bannerImage: group.bannerImage,
+            }
+        });
+        res.data( responseData );
+    }
+);
+
+router.get(
+    '/get/group/:groupID',
+    auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, user_roles.ADMIN ),
+    async ( req, res ) => {
+
+        const group = req.group;
+        const responseData = group.export();
+
+        const groupChildren = await Group.find({ parent: group._id });
+        await group.populate('children');
+
+        responseData.children = [
+            ...groupChildren.map( group => group.export() ),
+            ...group.children.map( queue => queue.export() )
+        ]
+
+        // Build response
+        res.data( responseData );
     }
 );
 
