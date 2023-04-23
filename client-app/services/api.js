@@ -20,7 +20,7 @@ const lastFetch = {};
 
 async function fetchApi( route, method='GET', data ){
 
-    // Prevent duplicate requests
+    // Prevent duplicate requests (to prevent spamming the API & prevent incorrect refresh token reuse detection because of auto refresh)
     if( lastFetch[route] ){
         const timeSinceLastFetch = Date.now() - lastFetch[route];
         if( timeSinceLastFetch < 1000 ){

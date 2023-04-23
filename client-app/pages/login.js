@@ -1,19 +1,21 @@
 
-import React, { useEffect, useRef, useState } from "react";
-
+// Hooks
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Image from 'next/image';
 
+// Utils
+import * as api from '@/services/api';
+
+// Built-in Components
+import Head from 'next/head';
+
+// Custom Components
 import LayoutWrapper from '@/components/LayoutWrapper';
 import LayoutGroup from '@/components/LayoutGroup';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
-
-import styles from '@/styles/pages/Home.module.scss';
-
-import * as api from '@/services/api';
 import ErrorBox from "@/components/ErrorBox";
+
 
 export default function LoginPage(){
 
@@ -54,6 +56,8 @@ export default function LoginPage(){
         }
 
         // Handle Register
+        const redirect = router.query.redirect || '/tickets';
+        router.push( redirect );
     }
 
     return (
@@ -66,7 +70,7 @@ export default function LoginPage(){
             <LayoutWrapper fillHeight={true}>
 
                 <LayoutGroup marginSize={'large'}>
-                    <h1 className={styles.title}>Hello</h1>
+                    <h1>Hello</h1>
                     <p>Please login to proceed</p>
                 </LayoutGroup>
 

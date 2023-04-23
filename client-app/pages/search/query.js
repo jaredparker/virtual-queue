@@ -1,23 +1,19 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+// Hooks
+import useApi from '@/hooks/useApi';
 
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Image from 'next/image';
-
-import LayoutWrapper from '@/components/LayoutWrapper';
-import LayoutGroup from '@/components/LayoutGroup';
-import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
-
-import styles from '@/styles/pages/Home.module.scss';
-
+// Utils
 import * as api from '@/services/api';
-import ErrorBox from "@/components/ErrorBox";
-import NavBar from "@/components/NavBar";
-import CardList from "@/components/CardList";
 import formatResultsAsCards from '@/utils/formatResultsAsCards';
-import Header from '@/components/Header';
+
+// Built-in Components
+import Head from 'next/head';
+
+// Custom Components
+import LayoutWrapper from '@/components/LayoutWrapper';
+import NavBar from "@/components/NavBar";
+import Content from '@/components/Content';
+import CardListGroups from '@/components/CardListGroups';
 
 export default function QueryPage(){
 

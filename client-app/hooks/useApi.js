@@ -13,7 +13,7 @@ export default function useApi( apiFunction, formatDataToResult, autoFetch=true 
     const [ result, setResult ] = useState({});
 
     const fetchData = async () => {
-        if( fetching.current ) return;
+        if( fetching.current ) return; // Already fetching
         fetching.current = true;
         forceUpdate();
 

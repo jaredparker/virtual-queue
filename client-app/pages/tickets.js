@@ -1,20 +1,18 @@
 
-import React, { useEffect, useRef, useState } from "react";
+// Hooks
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 
-import Head from 'next/head';
-import Image from 'next/image';
-
-import LayoutWrapper from '@/components/LayoutWrapper';
-import LayoutGroup from '@/components/LayoutGroup';
-import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
-
-import styles from '@/styles/pages/Home.module.scss';
-
+// Utils
 import * as api from '@/services/api';
-import ErrorBox from "@/components/ErrorBox";
-import NavBar from "@/components/NavBar";
-import CardList from "@/components/CardList";
+
+// Built-in Components
+import Head from 'next/head';
+
+// Custom Components
+import LayoutWrapper from '@/components/LayoutWrapper';
+import NavBar from '@/components/NavBar';
+
 
 export default function TicketsPage(){
 

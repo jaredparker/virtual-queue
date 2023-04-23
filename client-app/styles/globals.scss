@@ -25,6 +25,10 @@ main {
     height: 100vh;
 }
 
+h1 {
+    color: $color-primary;
+}
+
 h2 {
     font-weight: $font-weight-bold;
 }
