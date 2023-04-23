@@ -16,6 +16,7 @@ import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import ErrorBox from "@/components/ErrorBox";
 
+const fallbackRedirect = '/tickets';
 
 export default function LoginPage(){
 
@@ -25,6 +26,11 @@ export default function LoginPage(){
     const passwordRef = useRef(null);
 
     const [ errorText, setErrorText ] = useState(''); 
+
+    const checkLogin = async () => {
+        const result = await api.authCheck();
+        if( result.success == true ) redirect();
+    }
 
     const login = async () => {
         const email = emailRef.current.value;
@@ -39,8 +45,7 @@ export default function LoginPage(){
         }
 
         // Handle Login
-        const redirect = router.query.redirect || '/tickets';
-        router.push( redirect );
+        redirect();
     }
 
     const register = async () => {
@@ -56,9 +61,16 @@ export default function LoginPage(){
         }
 
         // Handle Register
-        const redirect = router.query.redirect || '/tickets';
-        router.push( redirect );
+        redirect();
     }
+
+    const redirect = () => {
+        router.push( router.query.redirect || fallbackRedirect );
+    }
+
+    useEffect(() => {
+        checkLogin();
+    }, [ router.asPath ]) // only run at inital render
 
     return (
         <>

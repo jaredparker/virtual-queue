@@ -59,6 +59,10 @@ async function fetchApi( route, method='GET', data ){
 
 // - Auth
 
+export async function authCheck(){
+    return await fetchApi( '/auth/check' );
+}
+
 export async function login( email, password ){
     return await fetchApi( '/auth/login', 'POST', { email, password } );
 }
