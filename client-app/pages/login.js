@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -15,6 +16,8 @@ import * as api from '@/services/api';
 import ErrorBox from "@/components/ErrorBox";
 
 export default function LoginPage(){
+
+    const router = useRouter();
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
@@ -34,7 +37,8 @@ export default function LoginPage(){
         }
 
         // Handle Login
-        console.log( result );
+        const redirect = router.query.redirect || '/tickets';
+        router.push( redirect );
     }
 
     const register = async () => {

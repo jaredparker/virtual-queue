@@ -7,7 +7,28 @@ const hostname = ( process.env.NEXT_PUBLIC_API_DOMAIN ) ? process.env.NEXT_PUBLI
 
 const api = route => `${hostname}/${process.env.NEXT_PUBLIC_API_VERSION}${route}`;
 
+const loginRoute = '/login';
+async function redirectLogin(){
+    const currentPath = window.location.pathname;
+    if( currentPath == loginRoute ) return;
+    window.location = `${loginRoute}?redirect=${currentPath}`;
+
+    await new Promise(()=>{}); // Halt to stay 'loading'
+}
+
+const lastFetch = {};
+
 async function fetchApi( route, method='GET', data ){
+
+    // Prevent duplicate requests
+    if( lastFetch[route] ){
+        const timeSinceLastFetch = Date.now() - lastFetch[route];
+        if( timeSinceLastFetch < 1000 ){
+            console.log(`Duplicate API request rejected: ${route}`);
+            return { success: false, error: 'Duplicate request' }
+        }
+    }
+    lastFetch[route] = Date.now();
 
     let options = {
         headers: {
@@ -25,6 +46,8 @@ async function fetchApi( route, method='GET', data ){
         console.log(error);
         return { success: false, error: 'Network error' };
     }
+
+    if( response.status == 401 ) await redirectLogin();
 
     const result = await response.json();
     if( process.env.NODE_ENV !== 'production' ) console.log(result);
