@@ -1,0 +1,20 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.spinner {
+    width: $box-medium;
+    height: $box-medium;
+
+    border: 2px solid $color-foreground-light;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin $transition-slow linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -19,20 +19,15 @@ import CardList from "@/components/CardList";
 import formatResultsAsCards from '@/utils/formatResultsAsCards';
 import Header from '@/components/Header';
 import renderCardGroups from '@/utils/renderCardGroups';
+import Spinner from '@/components/Spinner';
+
+import useApi from '@/hooks/useApi';
+import Content from '@/components/Content';
+import CardListGroups from '@/components/CardListGroups';
 
 export default function SearchPage(){
 
-    const router = useRouter();
-    const [ cardGroups, setCardGroups ] = useState([]);
-
-    const refreshResults = async () => {
-        const res = await api.getQueues();
-        if( res.success ) setCardGroups( formatResultsAsCards( res.data ) );
-    }
-    
-    useEffect(() => {
-        refreshResults();
-    }, [router.asPath]) // only run at inital render
+    const [ data, fetchData ] = useApi( api.getQueues, res => formatResultsAsCards( res.data ) ); // Auto Fetch
 
     return (
         <>
@@ -42,10 +37,12 @@ export default function SearchPage(){
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            <LayoutWrapper fillHeight={true}>
-                <LayoutGroup gapSize='medium'>
-                    { renderCardGroups( cardGroups ) }
-                </LayoutGroup>
+            <LayoutWrapper fillHeight={true} fetching={data.fetching}>
+                <Content
+                    data={data}
+                    noContentCheck={ result => result.length === 0 }
+                    renderContent={ result => <CardListGroups>{result}</CardListGroups> }
+                />
             </LayoutWrapper>
 
             <NavBar/>

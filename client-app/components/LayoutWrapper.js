@@ -5,6 +5,7 @@ import formatClasses from '@/utils/formatClasses';
 
 import styles from '@/styles/components/LayoutWrapper.module.scss';
 import imageVar from '@/utils/imageVar';
+import Spinner from './Spinner';
 
 export default function LayoutWrapper({ children, centreContent=false, fillHeight=false, className='', bannerImage, header }){
 
@@ -24,7 +25,7 @@ export default function LayoutWrapper({ children, centreContent=false, fillHeigh
                 </div>
             </> }
             <div className={classes}>
-                {children}
+                { children }
             </div>
         </>
     )

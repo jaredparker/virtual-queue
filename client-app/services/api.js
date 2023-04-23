@@ -50,6 +50,7 @@ async function fetchApi( route, method='GET', data ){
     if( response.status == 401 ) await redirectLogin();
 
     const result = await response.json();
+    result.status = response.status;
     if( process.env.NODE_ENV !== 'production' ) console.log(result);
     return result;
 }
@@ -70,6 +71,10 @@ export async function register( email, password ){
 
 export async function getQueues(){
     return await fetchApi( '/queues/get' );
+}
+
+export async function getQueue( id ){
+    return await fetchApi( `/queues/get/queue/${id}` );
 }
 
 export async function getGroup( id ){

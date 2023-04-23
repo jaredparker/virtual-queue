@@ -21,6 +21,11 @@
         @include text-shadow;
     }
 
+    .subtitle {
+        font-size: $font-size-small;
+        @include text-shadow;
+    }
+
     .button {
         @include centre-content;
         @include reset-border;
@@ -34,6 +39,6 @@
     }
 
     > *:not(:last-child) {
-        margin-right: $padd-tiny;
+        margin-right: $padd-small;
     }
 }

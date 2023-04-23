@@ -14,12 +14,12 @@ export default function Header({ title, subtitle }){
             <button className={styles.button} onClick={ () => router.back() }>
                 <HiOutlineArrowSmallLeft/>
             </button>
-            <LayoutGroup className={styles.headerText}>
+            <div className={styles.headerText}>
                 <p className={styles.title}>{title}</p>
                 { subtitle &&
                     <p className={styles.subtitle}>{subtitle}</p>
                 }
-            </LayoutGroup>
+            </div>
             <button className={styles.button}>
                 <HiMagnifyingGlass/>
             </button>
