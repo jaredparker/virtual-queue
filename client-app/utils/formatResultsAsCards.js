@@ -1,9 +1,9 @@
 
 export default function formatResultsAsCards( data=[] ){
 
-    const catergories = {};
+    const categories = {};
     data.forEach( item => {
-        if( !catergories[item.category] ){ catergories[item.category] = { title: item.category, cards: [] }; }
+        if( !categories[item.category] ){ categories[item.category] = { title: item.category, cards: [] }; }
 
         const card = {
             id: item.id,
@@ -14,8 +14,18 @@ export default function formatResultsAsCards( data=[] ){
         if( item.type === 'group' ) card.link = `/search/group/${item.id}`;
         else if( item.type === 'queue' ) card.link = `/search/queue/${item.id}`;
 
-        catergories[item.category].cards.push( card );
+        categories[item.category].cards.push( card );
     });
+    
+    let groups = Object.values(categories);
 
-    return Object.values(catergories);
+    // Move uncategorized to the end & rename it to 'Other' if there are other categories
+    // (to avoid confusion where it may appear to be another category)
+    const uncategorized = categories[''];
+    if( uncategorized && groups.length > 1 ){
+        uncategorized.title = 'Other';
+        groups.push( ...groups.splice( groups.indexOf(uncategorized), 1 ) );
+    }
+
+    return groups;
 }
