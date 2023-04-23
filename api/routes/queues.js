@@ -28,7 +28,7 @@ router.param('queueID', async ( req, res, next, value ) => {
     catch( err ){ return res.notFound(); }
 
     // Queue ID is invalid
-    if( !req.group ){ return res.notFound(); }
+    if( !req.queue ){ return res.notFound(); }
 
     next();
 });
@@ -130,7 +130,21 @@ router.get(
             ...group.children.map( queue => queue.export() )
         ]
 
-        // Build response
+        res.data( responseData );
+    }
+);
+
+router.get(
+    '/get/queue/:queueID',
+    auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, user_roles.ADMIN ),
+    async ( req, res ) => {
+
+        const queue = req.queue;
+        const responseData = queue.export();
+
+        const parentGroup = await Group.findOne({ children: queue._id });
+        responseData.parentGroup = (parentGroup) ? parentGroup.export() : null;
+
         res.data( responseData );
     }
 );
