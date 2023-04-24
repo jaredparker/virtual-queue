@@ -47,11 +47,9 @@ export default function GroupPage(){
             <LayoutWrapper fillHeight={true} bannerImage={data?.result?.group?.bannerImage} header={
                 <Header title={data?.result?.group?.name}/>
             }>
-                <Content
-                    data={data}
-                    noContentCheck={ result => result.cardGroups.length === 0 }
-                    renderContent={ result => <CardListGroups>{result.cardGroups}</CardListGroups> }
-                />
+                <Content data={data} noContentCheck={ result => result.cardGroups.length === 0 }>{
+                    result => <CardListGroups>{result.cardGroups}</CardListGroups> 
+                }</Content>
             </LayoutWrapper>
 
             <NavBar/>

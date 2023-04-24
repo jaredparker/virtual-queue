@@ -29,11 +29,9 @@ export default function SearchPage(){
             </Head>
             
             <LayoutWrapper fillHeight={true} fetching={data.fetching}>
-                <Content
-                    data={data}
-                    noContentCheck={ result => result.length === 0 }
-                    renderContent={ result => <CardListGroups>{result}</CardListGroups> }
-                />
+                <Content data={data}>{
+                    result => <CardListGroups>{result}</CardListGroups> 
+                }</Content>
             </LayoutWrapper>
 
             <NavBar/>

@@ -19,25 +19,6 @@ import Content from '@/components/Content';
 import LayoutGroup from '@/components/LayoutGroup';
 
 
-const tabs = [
-    {
-        name: 'Queue Now',
-        component: queueNow
-    },
-    {
-        name: 'Queue Advance',
-        component: queueAdvance
-    }
-];
-
-// const QueueTabs = CreateTabs([
-//     { name: 'Queue Now', component: queueNow },
-//     { name: 'Queue Advance', component: queueAdvance }
-// ]);
-
-// console.log(QueueTabs);
-
-
 export default function QueuePage(){
 
     // - Data Fetching
@@ -69,9 +50,8 @@ export default function QueuePage(){
             <LayoutWrapper fillHeight={true} bannerImage={data?.result?.bannerImage} header={
                 <Header title={data?.result?.name} subtitle={data?.result?.parentGroup?.name}/>
             }>
-                <Content
-                    data={data}
-                    renderContent={ content => {
+                <Content data={data}>{
+                    content => {
                         return (
                             <LayoutGroup centreContent={true} gapSize='medium' marginSize='small'>
                                 <LayoutGroup centreContent={true}>
@@ -83,8 +63,8 @@ export default function QueuePage(){
                                 <QueueTab content={content}/>
                             </LayoutGroup>
                         );
-                    }}
-                />
+                    }
+                }</Content>
             </LayoutWrapper>
 
             <NavBar/>

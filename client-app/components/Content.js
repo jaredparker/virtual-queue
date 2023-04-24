@@ -7,9 +7,8 @@ import styles from '@/styles/components/Content.module.scss';
 import ErrorBox from './ErrorBox';
 
 export default function Content({
-    data,
-    noContentCheck=()=>false,
-    content, renderContent,
+    data, children: content,
+    noContentCheck=result=>result?.length===0,
     noContentMessage="No results found",
     notFoundMessage="Page not found",
     errorMessage="Something went wrong\nPlease try again later"
@@ -30,11 +29,11 @@ export default function Content({
             <p className={styles.message}>{noContentMessage}</p>
         </LayoutGroup>
 
+        : typeof content == 'function' ?
+        content( data.result )
+        
         : content ?
         content
-        
-        : renderContent ?
-        renderContent(data.result)
 
         : <></>
     }</>);
