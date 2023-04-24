@@ -10,7 +10,7 @@ import * as api from '@/services/api';
 
 // Built-in Components
 import Head from 'next/head';
-import { HiOutlineChevronDoubleRight } from 'react-icons/hi2';
+import { HiOutlineChevronDoubleRight, HiOutlineArrowSmallUp, HiOutlineArrowSmallDown } from 'react-icons/hi2';
 
 // Custom Components
 import LayoutWrapper from '@/components/LayoutWrapper';
@@ -96,7 +96,7 @@ function QueueNow({ content: { waitTimes } }){
 
     return (
         <>
-            <LayoutGroup centreContent={true}>
+            <LayoutGroup centreContent={true} gap={'medium'}>
                 <h3>Estimated Queue Time</h3>
                 <Box className={styles.waitTimes}>
                     { $waitTimes }
@@ -114,9 +114,59 @@ function QueueNow({ content: { waitTimes } }){
 }
 
 function QueueAdvance({ content }){
+
+    content.advanceTimes = [ [1682344800, 1800], [1682346600, 1800], [1682353800, 1800], [1682355600, 1800], [1682357400, 1800], [1682359200, 43200] ];
+
+    const [ selectedSlot, setSelectedSlot ] = useState( content.advanceTimes[0] );
+    const [ overflowHidden, setOverflowHidden ] = useState( true );
+
+    const overflowLimit = 4;
+
+    const formatTime = ( unix ) => new Date( unix * 1000 ).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+
+    let selectedInOverflow = true;
+    const timeSlots = content.advanceTimes.map(( slot, index ) => {
+        const inOverflow = index >= overflowLimit;
+        const selected = selectedSlot[0] === slot[0];
+        if( selected && !inOverflow ) selectedInOverflow = false;
+
+        if( overflowHidden ){
+            if( inOverflow && !selected ) return; // hide overflow slots
+            if( index+1 == overflowLimit && selectedInOverflow ) return; // hide last slot if selected slot is in overflow
+        }
+
+        const [ startUnix, deltaUnix ] = slot;
+
+        const startTime = formatTime(startUnix);
+        const endTime = formatTime(startUnix + deltaUnix);
+
+        const selectSlot = () => setSelectedSlot( slot );
+
+        const classes = `${styles.timeSlot} ${selected ? styles.selected : ''}`;
+
+        return <li key={`${startUnix}-${index}`} className={classes} onClick={selectSlot}>{startTime} - {endTime}</li>
+    });
+
     return (
         <>
-            <h3>Queue Advance Tab</h3>
+        <LayoutGroup centreContent={true}>
+            <h3>Entry Time</h3>
+            <ul className={styles.timeSlots}>
+                { timeSlots }
+            </ul>
+            { content.advanceTimes.length > overflowLimit &&
+                <div className={styles.overflow} onClick={() => setOverflowHidden(!overflowHidden)}>
+                    { overflowHidden
+                    ? <><p>show more</p><HiOutlineArrowSmallDown/></>
+                    : <><p>show less</p><HiOutlineArrowSmallUp/></>
+                    }
+                </div>
+            }
+        </LayoutGroup>
+        <Gap/>
+        <LayoutGroup>
+            <Button>Book Ticket</Button>
+        </LayoutGroup>
         </>
     );
 }

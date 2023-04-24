@@ -34,3 +34,42 @@
     justify-content: center;
     gap: $padd-tiny;
 }
+
+.timeSlots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: $padd-tiny;
+
+    list-style-type: none;
+
+    .timeSlot {
+        padding: $padd-tiny $padd-small;
+
+        font-size: $font-size-large;
+        font-weight: $font-weight-normal;
+
+        @include reset-border;
+        border-radius: $padd-large;
+
+        color: $color-foreground-light;
+        background-color: $color-background-light;
+
+        &.selected {
+            color: $color-primary;
+            background-color: $color-primary-background;
+        }
+    }
+}
+
+.overflow {
+    display: flex;
+    align-items: center;
+
+    color: $color-foreground-light;
+    font-size: $font-size-medium;
+
+    svg {
+        font-size: $icon-small;
+    }
+}
