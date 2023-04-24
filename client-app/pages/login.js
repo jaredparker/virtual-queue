@@ -46,7 +46,7 @@ export default function LoginPage(){
         }
 
         // Handle Login
-        redirect();
+        await redirect();
     }
 
     const register = async () => {
@@ -62,11 +62,14 @@ export default function LoginPage(){
         }
 
         // Handle Register
-        redirect();
+        await redirect();
     }
 
     const redirect = () => {
         router.push( router.query.redirect || fallbackRedirect );
+
+        // Keep button loading until redirect
+        return new Promise(() => {});
     }
 
     useEffect(() => {

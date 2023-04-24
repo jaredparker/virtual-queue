@@ -6,6 +6,11 @@
     width: $box-medium;
     height: $box-medium;
 
+    &.small {
+        width: $box-small;
+        height: $box-small;
+    }
+
     border: 2px solid $color-foreground-light;
     border-left-color: transparent;
     border-bottom-color: transparent;

@@ -7,6 +7,9 @@
     width: 100%;
 
     text-align: center;
+    > * {
+        margin: 0 auto;
+    }
     font-size: $font-size-large;
 
     @include reset-border;
