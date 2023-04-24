@@ -24,7 +24,7 @@ main {
     flex-direction: column;
     
     height: 100vh;
-    height: calc( 100svh + env(safe-area-inset-top) );
+    height: 100svh;
 }
 
 h1 {

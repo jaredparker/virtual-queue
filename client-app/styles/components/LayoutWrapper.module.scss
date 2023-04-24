@@ -29,7 +29,7 @@ $overhang: $padd-small;
     }
 
     &.hasHeader {
-        margin-top: calc( $box-xlarge + env(safe-area-inset-top) );
+        margin-top: $box-xlarge;
         border-radius: $overhang $overhang 0 0;
         box-shadow: 0 -10px 10px rgba(black, .3);
     }
@@ -46,10 +46,10 @@ $overhang: $padd-small;
     justify-content: space-between;
 
     width: 100%;
-    height: calc( $box-xlarge + $overhang + env(safe-area-inset-top) );
+    height: $box-xlarge + $overhang;
 
     padding: $padd-small;
-    padding-top: calc( $padd-small + env(safe-area-inset-top) );
+    padding-top: $padd-small;
     padding-bottom: $padd-small + $overhang;
 
     color: $color-secondary-foreground;
