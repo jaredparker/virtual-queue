@@ -1,0 +1,16 @@
+{
+    "name": "Virtual Queue",
+    "short_name": "VQueue",
+    "icons": [
+      {
+        "src": "/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "start_url": "/tickets",
+    "display": "standalone",
+    "orientation": "portrait"
+}

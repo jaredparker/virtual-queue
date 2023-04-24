@@ -15,6 +15,7 @@ import LayoutGroup from '@/components/LayoutGroup';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import ErrorBox from "@/components/ErrorBox";
+import Gap from '@/components/Gap';
 
 const fallbackRedirect = '/tickets';
 
@@ -76,8 +77,6 @@ export default function LoginPage(){
         <>
             <Head>
                 <title>Login</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
             </Head>
             <LayoutWrapper fillHeight={true}>
 
@@ -91,13 +90,14 @@ export default function LoginPage(){
                     <TextInput name="Password" innerRef={passwordRef} type={'password'}></TextInput>
                     <ErrorBox>{errorText}</ErrorBox>
                 </LayoutGroup>
-            </LayoutWrapper>
+                
+                <Gap/>
 
-            <LayoutWrapper>
                 <LayoutGroup marginSize={'large'}>
                     <Button onClick={login}>Login</Button>
                     <Button onClick={register} subButton={true}>Register</Button>
                 </LayoutGroup>
+                
             </LayoutWrapper>
         </>
     )

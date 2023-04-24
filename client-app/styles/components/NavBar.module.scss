@@ -2,9 +2,15 @@
 @import '@/styles/abstracts/variables';
 @import '@/styles/abstracts/mixins';
 
+$nav-icon: $icon-large;
+$nav-text: $font-size-small;
+$nav-padd: $padd-small;
+
+$nav-size: $nav-icon + $nav-text + $nav-padd*2;
+
 .placeholderNav {
     width: 100%;
-    height: $box-xlarge;
+    height: $nav-size;
 }
 
 .nav {
@@ -16,11 +22,23 @@
     justify-content: space-around;
 
     width: 100%;
-    height: $box-xlarge;
+    height: $nav-size;
 
-    background-color: $color-background;
+    // background-color: $color-background;
+    background: $color-background;
 
     z-index: 2;
+
+    // &::before {
+    //     content: '';
+    //     position: absolute;
+    //     top: -$padd-small;
+
+    //     width: 100%;
+    //     height: $padd-small;
+
+    //     background: linear-gradient( to bottom, rgba($color-background, 0), $color-background );
+    // }
 }
 
 .item {
@@ -29,9 +47,9 @@
     justify-content: flex-end;
     align-items: center;
 
-    width: $box-xlarge;
-    height: $box-xlarge;
-    padding: $padd-small 0;
+    width: 100%;
+    height: $nav-size;
+    padding: $nav-padd 0;
 
     color: $color-foreground-light;
 
@@ -40,11 +58,11 @@
     }
 
     .icon {
-        font-size: $icon-large;
+        font-size: $nav-icon;
     }
 
     p {
-        font-size: $font-size-small;
+        font-size: $nav-text;
         text-align: center;
     }
 }

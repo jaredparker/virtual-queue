@@ -1,7 +1,7 @@
 
-import LayoutGroup from './LayoutGroup';
-
 import formatClasses from '@/utils/formatClasses';
+
+import LayoutGroup from './LayoutGroup';
 
 import styles from '@/styles/components/LayoutWrapper.module.scss';
 import imageVar from '@/utils/imageVar';
@@ -13,13 +13,13 @@ export default function LayoutWrapper({ children, centreContent=false, fillHeigh
         [styles.wrapper]: true,
         [styles.centre]: centreContent,
         [styles.fill]: fillHeight,
+        [styles.hasHeader]: header,
         [className]: true
     });
 
     return (
         <>
             { header && <>
-                <div className={styles.headerPlaceholder}/>
                 <div className={styles.header} style={imageVar( bannerImage )}>
                     { header }
                 </div>

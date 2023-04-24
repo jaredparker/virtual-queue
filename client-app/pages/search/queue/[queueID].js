@@ -39,8 +39,8 @@ export default function QueuePage(){
 
     // - Tabs
     const [ QueueTab, setQueueTab, QueueNavigator ] = useTabs([
-        { name: 'Queue Now', component: queueNow },
-        { name: 'Advance', component: queueAdvance }
+        { name: 'Queue Now', component: QueueNow },
+        { name: 'Advance', component: QueueAdvance }
     ]);
 
     // - Render
@@ -49,8 +49,6 @@ export default function QueuePage(){
         <>
             <Head>
                 <title>{data?.result?.name||'Loading...'}</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
             </Head>
             
             <LayoutWrapper fillHeight={true} bannerImage={data?.result?.bannerImage} header={
@@ -78,13 +76,21 @@ export default function QueuePage(){
     )
 }
 
-function queueNow({ content: { waitTimes } }){
+function QueueNow({ content: { waitTimes } }){
 
-    const $waitTimes = waitTimes.map( ( { name, minutes }, index ) => 
-        <div className={styles.waitTime} key={index}>
-            <p>{ name }</p><p>{ minutes } minutes</p>
-        </div>
-    );
+    const $waitTimes = [];
+    waitTimes.forEach( ( { name, minutes }, index ) => {
+
+        $waitTimes.push(
+            <div key={`time-${index}`} className={styles.waitTime}>
+                <p>{ name }</p><p>{ minutes } minutes</p>
+            </div>
+        );
+
+        if( index < waitTimes.length - 1 ) $waitTimes.push(
+            <div key={`arrow-${index}`} className={styles.waitTimeArrow}><HiOutlineChevronDoubleRight/></div>
+        );
+    });
 
     const totalWaitTime = waitTimes.reduce(( acc, cur ) => acc + cur.minutes, 0 );
 
@@ -93,16 +99,9 @@ function queueNow({ content: { waitTimes } }){
             <LayoutGroup centreContent={true}>
                 <h3>Estimated Queue Time</h3>
                 <Box className={styles.waitTimes}>
-                    { $waitTimes.map(( $waitTime, index ) => {
-                        return (
-                            <>
-                            {$waitTime}
-                            { index < $waitTimes.length - 1 && <div className={styles.waitTimeArrow}><HiOutlineChevronDoubleRight/></div> }
-                            </>
-                        );
-                    })}
+                    { $waitTimes }
                 </Box>
-                <Box className={styles.waitTimeTotal} styles>
+                <Box className={styles.waitTimeTotal}>
                     <p>Total</p><p>{ totalWaitTime } minutes</p>
                 </Box>
             </LayoutGroup>
@@ -114,7 +113,7 @@ function queueNow({ content: { waitTimes } }){
     );
 }
 
-function queueAdvance({ content }){
+function QueueAdvance({ content }){
     return (
         <>
             <h3>Queue Advance Tab</h3>

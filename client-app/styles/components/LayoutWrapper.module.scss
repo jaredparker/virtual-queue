@@ -11,7 +11,6 @@ $overhang: $padd-small;
     position: relative;
 
     width: 100%;
-    border-radius: $overhang;
 
     background-color: $color-background;
 
@@ -29,13 +28,14 @@ $overhang: $padd-small;
         justify-content: center;
     }
 
+    &.hasHeader {
+        margin-top: calc( $box-xlarge + env(safe-area-inset-top) );
+        border-radius: $overhang $overhang 0 0;
+        box-shadow: 0 -10px 10px rgba(black, .3);
+    }
+
     z-index: 1;
     overflow-y: auto;
-}
-
-.headerPlaceholder {
-    width: 100%;
-    height: $box-xlarge;
 }
 
 .header {
@@ -46,9 +46,10 @@ $overhang: $padd-small;
     justify-content: space-between;
 
     width: 100%;
-    height: $box-xlarge + $overhang;
+    height: calc( $box-xlarge + $overhang + env(safe-area-inset-top) );
 
     padding: $padd-small;
+    padding-top: calc( $padd-small + env(safe-area-inset-top) );
     padding-bottom: $padd-small + $overhang;
 
     color: $color-secondary-foreground;

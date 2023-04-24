@@ -45,7 +45,11 @@ queueSchema.methods.export = function(){
         name: this.name,
         category: this.category,
         location: this.location,
-        bannerImage: this.bannerImage
+        bannerImage: this.bannerImage,
+        waitTimes: [
+            { name: 'Virtual', minutes: 54 },
+            { name: 'Physical', minutes: 3 }
+        ]
     };
 }
 
