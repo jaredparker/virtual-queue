@@ -1,0 +1,10 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.box {
+    width: 100%;
+    padding: $padd-xsmall;
+    @include reset-border;
+    background: $color-background-light;
+}

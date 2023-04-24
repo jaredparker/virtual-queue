@@ -10,6 +10,7 @@ import * as api from '@/services/api';
 
 // Built-in Components
 import Head from 'next/head';
+import { HiOutlineChevronDoubleRight } from 'react-icons/hi2';
 
 // Custom Components
 import LayoutWrapper from '@/components/LayoutWrapper';
@@ -17,7 +18,12 @@ import NavBar from "@/components/NavBar";
 import Header from '@/components/Header';
 import Content from '@/components/Content';
 import LayoutGroup from '@/components/LayoutGroup';
+import Box from '@/components/Box';
 
+// Styles
+import styles from '@/styles/pages/Queue.module.scss';
+import Button from '@/components/Button';
+import Gap from '@/components/Gap';
 
 export default function QueuePage(){
 
@@ -53,15 +59,15 @@ export default function QueuePage(){
                 <Content data={data}>{
                     content => {
                         return (
-                            <LayoutGroup centreContent={true} gapSize='medium' marginSize='small'>
+                            <>
                                 <LayoutGroup centreContent={true}>
                                     <h3>Ticket Type</h3>
-                                    <section>
+                                    <Box>
                                         <QueueNavigator/>
-                                    </section>
+                                    </Box>
                                 </LayoutGroup>
                                 <QueueTab content={content}/>
-                            </LayoutGroup>
+                            </>
                         );
                     }
                 }</Content>
@@ -72,11 +78,38 @@ export default function QueuePage(){
     )
 }
 
-function queueNow({ content }){
+function queueNow({ content: { waitTimes } }){
+
+    const $waitTimes = waitTimes.map( ( { name, minutes }, index ) => 
+        <div className={styles.waitTime} key={index}>
+            <p>{ name }</p><p>{ minutes } minutes</p>
+        </div>
+    );
+
+    const totalWaitTime = waitTimes.reduce(( acc, cur ) => acc + cur.minutes, 0 );
+
     return (
         <>
-            <h3>Queue Now Tab</h3>
-            { content.name }
+            <LayoutGroup centreContent={true}>
+                <h3>Estimated Queue Time</h3>
+                <Box className={styles.waitTimes}>
+                    { $waitTimes.map(( $waitTime, index ) => {
+                        return (
+                            <>
+                            {$waitTime}
+                            { index < $waitTimes.length - 1 && <div className={styles.waitTimeArrow}><HiOutlineChevronDoubleRight/></div> }
+                            </>
+                        );
+                    })}
+                </Box>
+                <Box className={styles.waitTimeTotal} styles>
+                    <p>Total</p><p>{ totalWaitTime } minutes</p>
+                </Box>
+            </LayoutGroup>
+            <Gap/>
+            <LayoutGroup>
+                <Button>Join Queue</Button>
+            </LayoutGroup>
         </>
     );
 }

@@ -42,9 +42,6 @@ p {
     font-weight: $font-weight-normal;
 }
 
-section {
-    width: 100%;
-    padding: $padd-small;
-    @include reset-border;
-    background: $color-background-light;
+b {
+    font-weight: $font-weight-bold;
 }

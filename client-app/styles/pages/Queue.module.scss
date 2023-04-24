@@ -1,0 +1,36 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.waitTimes {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $padd-small;
+}
+
+.waitTimeTotal,
+.waitTime {
+
+    color: $color-foreground-light;
+
+    :first-child {
+        font-weight: $font-weight-bold;
+        color: $color-foreground;
+    }
+}
+
+.waitTimeArrow {
+    width: $icon-medium;
+    height: $icon-medium;
+    font-size: $icon-medium;
+    color: $color-foreground-light;
+}
+
+.waitTimeTotal {
+    display: flex;
+    justify-content: center;
+    gap: $padd-tiny;
+}
