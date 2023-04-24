@@ -2,11 +2,13 @@
 @import '@/styles/abstracts/variables';
 @import '@/styles/abstracts/mixins';
 
+$overhang: $padd-small;
+
 .wrapper {
     position: relative;
 
     width: 100%;
-    border-radius: $border-radius * 2;
+    border-radius: $overhang;
 
     background-color: $color-background;
 
@@ -41,10 +43,10 @@
     justify-content: space-between;
 
     width: 100%;
-    height: $box-xlarge + $border-radius * 2;
+    height: $box-xlarge + $overhang;
 
     padding: $padd-small;
-    padding-bottom: $padd-small + $border-radius * 2;
+    padding-bottom: $padd-small + $overhang;
 
     color: $color-secondary-foreground;
     @include image-overlay;

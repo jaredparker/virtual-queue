@@ -1,5 +1,6 @@
 
 @import './abstracts/variables';
+@import './abstracts/mixins';
 
 * {
     box-sizing: border-box;
@@ -29,10 +30,21 @@ h1 {
     color: $color-primary;
 }
 
-h2 {
+h2, h3 {
     font-weight: $font-weight-bold;
+}
+
+h3 {
+    font-size: $font-size-medium;
 }
 
 p {
     font-weight: $font-weight-normal;
+}
+
+section {
+    width: 100%;
+    padding: $padd-small;
+    @include reset-border;
+    background: $color-background-light;
 }

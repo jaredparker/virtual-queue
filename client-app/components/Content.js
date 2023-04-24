@@ -9,7 +9,7 @@ import ErrorBox from './ErrorBox';
 export default function Content({
     data,
     noContentCheck=()=>false,
-    renderContent=()=>{},
+    content, renderContent,
     noContentMessage="No results found",
     notFoundMessage="Page not found",
     errorMessage="Something went wrong\nPlease try again later"
@@ -30,6 +30,12 @@ export default function Content({
             <p className={styles.message}>{noContentMessage}</p>
         </LayoutGroup>
 
-        : renderContent(data.result)
+        : content ?
+        content
+        
+        : renderContent ?
+        renderContent(data.result)
+
+        : <></>
     }</>);
 }

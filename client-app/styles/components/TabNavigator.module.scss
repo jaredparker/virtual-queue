@@ -1,0 +1,24 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.bar {
+    
+    .tab {
+        padding: $padd-tiny $padd-small;
+
+        font-size: $font-size-medium;
+        font-weight: $font-weight-normal;
+
+        @include reset-border;
+        border-radius: $font-size-medium;
+
+        color: $color-foreground-light;
+        background: none;
+
+        &.active {
+            color: $color-primary;
+            background-color: $color-primary-background;
+        }
+    }
+}

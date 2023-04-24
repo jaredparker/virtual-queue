@@ -2,12 +2,15 @@
 @import '@/styles/abstracts/variables';
 
 .group {
+    
+    width: 100%;
 
     &.centre {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        text-align: center;
     }
 
     &.gapSmall {
@@ -27,7 +30,7 @@
     }
 
     &.marginSmall {
-        margin: $padd-small 0;
+        margin: $padd-tiny 0;
     }
     &.marginMedium {
         margin: $padd-small 0;
