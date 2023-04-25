@@ -33,6 +33,8 @@
         background-size: contain;
         opacity: 0;
         pointer-events: none;
+
+        cursor: pointer;
     }
     &:focus::-webkit-search-cancel-button {
         opacity: .3;

@@ -74,4 +74,6 @@
     svg {
         font-size: $icon-small;
     }
+    
+    @include press;
 }

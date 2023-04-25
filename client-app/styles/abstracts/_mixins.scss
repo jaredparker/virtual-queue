@@ -23,6 +23,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    cursor: pointer;
 
     transition: transform $transition-quick;
     &:active {
@@ -56,4 +57,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+@mixin desktop-padd {
+    @media (min-width: $desktop-media) {
+        padding-left: calc( (100vw - $desktop-size)/2 );
+        padding-right: calc( (100vw - $desktop-size)/2 );
+    }
+    
+    // A lil animation when switching between mobile and desktop
+    transition: padding $transition-slow;
 }

@@ -23,6 +23,7 @@ $nav-size: $nav-icon + $nav-text + $nav-padd*2;
 
     width: 100%;
     height: $nav-size;
+    @include desktop-padd;
 
     // background-color: $color-background;
     background: $color-background;

@@ -16,6 +16,7 @@ $overhang: $padd-small;
 
     > * {
         padding: $padd-small;
+        @include desktop-padd;
         &:not(:first-child) {
             padding-top: 0;
         }
@@ -57,4 +58,6 @@ $overhang: $padd-small;
 
     color: $color-secondary-foreground;
     @include image-overlay;
+
+    @include desktop-padd;
 }
