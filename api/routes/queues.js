@@ -129,9 +129,37 @@ router.get(
         const groups = await Group.find({ name: { $regex: req.query, $options: 'i' } });
         const queues = await Queue.find({ name: { $regex: req.query, $options: 'i' } });
 
+        const categoryAsParentTree = async model => {
+            const data = model.export();
+            const tree = [];
+
+            const getGroupParents = async group => {
+                await group.populate('parent');
+                if( group.parent ){
+                    tree.unshift( group.parent.name );
+                    getGroupParents( group.parent );
+                }
+            }
+
+            // Model is a queue
+            if( data.type == 'queue' ){
+                const parentGroup = await Group.findOne({ children: data.id });
+                if( parentGroup ) tree.unshift( parentGroup.name );
+                await getGroupParents( parentGroup );
+
+            // Model is a group
+            } else {
+                await getGroupParents( model );
+            }
+
+            data.category = tree.join(' > ');
+            console.log(data);
+            return data;
+        }
+
         const responseData = [
-            ...groups.map( group => group.export() ),
-            ...queues.map( queue => queue.export() )
+            ...(await Promise.all( queues.map( categoryAsParentTree ) )),
+            ...(await Promise.all( groups.map( categoryAsParentTree ) ))
         ];
         res.data( responseData );
     }
