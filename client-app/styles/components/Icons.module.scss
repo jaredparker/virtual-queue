@@ -1,0 +1,18 @@
+
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.button {
+    @include centre-content;
+    @include reset-border;
+
+    // height: 100%;
+
+    color: inherit;
+    background: none;
+
+    font-size: $icon-large;
+
+    @include press;
+}

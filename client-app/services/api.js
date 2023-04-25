@@ -21,14 +21,15 @@ const lastFetch = {};
 async function fetchApi( route, method='GET', data ){
 
     // Prevent duplicate requests (to prevent spamming the API & prevent incorrect refresh token reuse detection because of auto refresh)
-    if( lastFetch[route] ){
-        const timeSinceLastFetch = Date.now() - lastFetch[route];
-        if( timeSinceLastFetch < 1000 ){
-            console.log(`Duplicate API request rejected: ${route}`);
-            return { success: false, error: 'Duplicate request' }
-        }
-    }
-    lastFetch[route] = Date.now();
+    // TODO: CACHE API RESPONSES
+    // if( lastFetch[route] ){
+    //     const timeSinceLastFetch = Date.now() - lastFetch[route];
+    //     if( timeSinceLastFetch < 1000 ){
+    //         console.log(`Duplicate API request rejected: ${route}`);
+    //         return { success: false, error: 'Duplicate request' }
+    //     }
+    // }
+    // lastFetch[route] = Date.now();
 
     let options = {
         headers: {
@@ -75,6 +76,10 @@ export async function register( email, password ){
 
 export async function getQueues(){
     return await fetchApi( '/queues/get' );
+}
+
+export async function getQueuesQuery( query ){
+    return await fetchApi( `/queues/query/${query}` );
 }
 
 export async function getQueue( id ){

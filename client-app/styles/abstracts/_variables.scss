@@ -3,6 +3,7 @@
 
 $color-primary: #4834d4;
 $color-primary-foreground: #fff;
+$color-primary-foreground-light: lighten( $color-primary, 20% );
 $color-primary-background: lighten( $color-primary, 40% );
 
 $color-secondary: darken( $color-primary, 40% );

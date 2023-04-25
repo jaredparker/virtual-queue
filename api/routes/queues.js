@@ -33,6 +33,13 @@ router.param('queueID', async ( req, res, next, value ) => {
     next();
 });
 
+router.param('query', async ( req, res, next, value ) => {
+
+    req.query = value;
+
+    next();
+});
+
 // ADMIN ROUTES (/v1/queues/...)
 
 router.post(
@@ -110,6 +117,22 @@ router.get(
                 bannerImage: group.bannerImage,
             }
         });
+        res.data( responseData );
+    }
+);
+
+router.get(
+    '/query/:query',
+    auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, user_roles.ADMIN ),
+    async ( req, res ) => {
+
+        const groups = await Group.find({ name: { $regex: req.query, $options: 'i' } });
+        const queues = await Queue.find({ name: { $regex: req.query, $options: 'i' } });
+
+        const responseData = [
+            ...groups.map( group => group.export() ),
+            ...queues.map( queue => queue.export() )
+        ];
         res.data( responseData );
     }
 );

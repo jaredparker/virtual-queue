@@ -59,6 +59,8 @@
             color: $color-primary;
             background-color: $color-primary-background;
         }
+
+        @include press;
     }
 }
 

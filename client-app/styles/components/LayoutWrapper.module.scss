@@ -16,6 +16,9 @@ $overhang: $padd-small;
 
     > * {
         padding: $padd-small;
+        &:not(:first-child) {
+            padding-top: 0;
+        }
     }
 
     &.fill {

@@ -14,7 +14,8 @@
 
     @include reset-border;
 
-    transition: background-color $transition-quick;
+    @include press;
+    transition-property: color, background-color, transform;
 }
 
 .button {

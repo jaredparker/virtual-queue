@@ -2,27 +2,26 @@
 import { useRouter } from 'next/router';
 
 import { HiOutlineArrowSmallLeft, HiMagnifyingGlass } from 'react-icons/hi2';
+import * as Icons from '@/components/Icons';
 
 import styles from '@/styles/components/Header.module.scss';
-import LayoutGroup from './LayoutGroup';
 
-export default function Header({ title, subtitle }){
+export default function Header({ title, subtitle, hideBack, hideSearch, coloredIcons, children }){
     const router = useRouter();
 
+    const classes = `${styles.header} ${coloredIcons ? styles.coloredIcons : ''}`;
+
     return (
-        <div className={styles.header}>
-            <button className={styles.button} onClick={ () => router.back() }>
-                <HiOutlineArrowSmallLeft/>
-            </button>
+        <div className={classes}>
+            { !hideBack && <Icons.Back/> }
             <div className={styles.headerText}>
                 <p className={styles.title}>{title}</p>
                 { subtitle &&
                     <p className={styles.subtitle}>{subtitle}</p>
                 }
+                { children }
             </div>
-            <button className={styles.button}>
-                <HiMagnifyingGlass/>
-            </button>
+            { !hideSearch && <Icons.Search/> }
         </div>
     );
 }

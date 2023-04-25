@@ -8,13 +8,17 @@ import ErrorBox from './ErrorBox';
 
 export default function Content({
     data, children: content,
+    noInitalFetch,
     noContentCheck=result=>result?.length===0,
     noContentMessage="No results found",
     notFoundMessage="Page not found",
     errorMessage="Something went wrong\nPlease try again later"
 }){
     return (<>{
-        data.fetching || data.success == null ?
+        noInitalFetch && !data.fetching && !data.fetched ?
+        <></>
+
+        : data.fetching || data.success == null ?
         <LayoutGroup marginSize={'large'} centreContent={true}>
             <Spinner/>
         </LayoutGroup>

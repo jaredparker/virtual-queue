@@ -90,7 +90,7 @@ export default function LoginPage(){
 
                 <LayoutGroup marginSize={'large'} gapSize={'large'}>
                     <TextInput name="Email" innerRef={emailRef}></TextInput>
-                    <TextInput name="Password" innerRef={passwordRef} type={'password'}></TextInput>
+                    <TextInput name="Password" innerRef={passwordRef} type={'password'} onSubmit={login}></TextInput>
                     <ErrorBox>{errorText}</ErrorBox>
                 </LayoutGroup>
                 
