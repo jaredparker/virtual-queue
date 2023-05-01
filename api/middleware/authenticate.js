@@ -273,6 +273,7 @@ export function roles(){
         if( !roles.includes( payload.role ) ) return res.noAccess( 'Insufficient permissions');
 
         // Authorised
+        req.userID = payload.id;
         next();
     }
 }

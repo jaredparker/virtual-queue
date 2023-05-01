@@ -2,6 +2,22 @@
 import mongoose from 'mongoose';
 import { every } from '../lib/enums.js';
 
+const previewTicket = new mongoose.Schema({
+
+    ticket: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ticket',
+        required: true
+    },
+
+    // Preview data
+    users: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    }],
+});
+
 const queueSchema = new mongoose.Schema({
 
     // ~ MongoDB automatically creates an _id field ~
@@ -34,12 +50,19 @@ const queueSchema = new mongoose.Schema({
         type: String
     },
 
+    standby: {
+        tickets: [previewTicket],
+    },
+
     timeslots: {
+
         slots: [{
             startTime: Number,
             duration: Number,
-            maxTickets: Number
+            maxTickets: Number,
+            tickets: [previewTicket]
         }],
+
         generators: [{
             every: { type: String, enum: every, default: every.DAY },
             start: { type: Number, default: 0 }, // minutes from every
@@ -52,7 +75,7 @@ const queueSchema = new mongoose.Schema({
 
             lastGeneration: Number, // unix timestamp
             purgeOldSlots: Boolean
-        }] 
+        }]
     }
 
     // ... other fields

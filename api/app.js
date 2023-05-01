@@ -14,9 +14,10 @@ import Queue from './models/queue.js';
 
 router.use( '/auth', await require('./routes/auth.js') );
 
+router.use( '/create', auth.roles( user_roles.ADMIN ), await require('./routes/create.js') );
 router.use( '/search', await require('./routes/search.js') );
 router.use( '/get', await require('./routes/get.js') );
-router.use( '/create', auth.roles( user_roles.ADMIN ), await require('./routes/create.js') );
+router.use( '/join', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, user_roles.ADMIN ), await require('./routes/join.js') );
 
 //router.use( '/tickets', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD ), await require('./routes/auth.js') );
 

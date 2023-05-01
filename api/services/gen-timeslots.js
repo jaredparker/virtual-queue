@@ -87,11 +87,9 @@ class TimeslotGenerator {
 
         try {
             await queue.save();
-            console.log( 'generated' );
 
         } catch( err ){
             if( err instanceof mongoose.Error.VersionError ){
-                console.log( 'version mismatch, retrying...' );
                 return this.generate( timestamp );
             } else {
                 console.log( err );
@@ -148,8 +146,6 @@ const generators = {};
 async function reloadGenerators( queueID ){
 
     if( generators[ queueID ] ){
-        console.log( 'stopping', queueID );
-        console.log( generators[ queueID ] );
         generators[ queueID ].forEach( gen => gen.stop() );
         delete generators[ queueID ];
     }

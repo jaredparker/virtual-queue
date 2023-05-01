@@ -13,3 +13,9 @@ export const every = {
     MONTH: 'month',
     YEAR: 'year'
 }
+
+export const ticket_types = {
+    ADVANCE: 'advance',
+    STANDBY: 'standby'
+}
+    

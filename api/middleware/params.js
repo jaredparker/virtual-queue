@@ -25,3 +25,22 @@ export async function queueID( req, res, next, value ){
 
     next();
 };
+
+export async function timeslotID( req, res, next, value ){
+
+    // Find timeslot's queue
+    let queue;
+    
+    // Queue not in request
+    if( !req.queue ){
+        try{ req.queue = await Queue.findOne({ 'timeslots.slots._id': value }); }
+        catch( err ){ return res.notFound(); }
+        if( !req.queue ) return res.notFound();
+    }
+
+    // Find timeslot in queue
+    req.timeslot = req.queue.timeslots.slots.find( s => s._id.equals( value ) );
+    if( !req.timeslot ) return res.notFound();
+
+    next();
+};
