@@ -85,7 +85,6 @@ router.get( '/all', async ( req, res ) => {
         }
 
         data.category = tree.join(' > ');
-        console.log(data);
         return data;
     }
 

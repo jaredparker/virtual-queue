@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose';
-import { user_roles } from '../lib/enums.js';
+import { every } from '../lib/enums.js';
 
 const queueSchema = new mongoose.Schema({
 
@@ -33,6 +33,27 @@ const queueSchema = new mongoose.Schema({
     bannerImage: {
         type: String
     },
+
+    timeslots: {
+        slots: [{
+            startTime: Number,
+            duration: Number,
+            maxTickets: Number
+        }],
+        generators: [{
+            every: { type: String, enum: every, default: every.DAY },
+            start: { type: Number, default: 0 }, // minutes from every
+            end: { type: Number, default: 0 }, // minutes from every
+            max: Number, // max number of slots to generate
+            gap: { type: Number, default: 0 }, // minutes
+
+            slotDuration: Number, // minutes
+            slotMaxTickets: { type: Number, default: 1 }, // max number of tickets per slot
+
+            lastGeneration: Number, // unix timestamp
+            purgeOldSlots: Boolean
+        }] 
+    }
 
     // ... other fields
 

@@ -13,6 +13,7 @@ import { require } from './lib/utils.js';
 if( process.env.NODE_ENV !== 'production' ) dotenv.config();
 
 import './services/db.js';
+import './services/gen-timeslots.js';
 
 const app = express();
 const server = http.createServer(app);
