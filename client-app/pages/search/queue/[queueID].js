@@ -76,7 +76,8 @@ export default function QueuePage(){
     )
 }
 
-function QueueNow({ content: { waitTimes } }){
+function QueueNow({ content: queue }){
+    const { waitTimes } = queue;
 
     const $waitTimes = [];
     waitTimes.forEach( ( { name, minutes }, index ) => {
@@ -94,6 +95,11 @@ function QueueNow({ content: { waitTimes } }){
 
     const totalWaitTime = waitTimes.reduce(( acc, cur ) => acc + cur.minutes, 0 );
 
+    // Join Queue
+    const joinQueue = async () => {
+        const res = await api.joinQueue( queue.id );
+    }
+
     return (
         <>
             <LayoutGroup centreContent={true} gap={'medium'}>
@@ -107,17 +113,16 @@ function QueueNow({ content: { waitTimes } }){
             </LayoutGroup>
             <Gap/>
             <LayoutGroup>
-                <Button>Join Queue</Button>
+                <Button onClick={joinQueue}>Join Queue</Button>
             </LayoutGroup>
         </>
     );
 }
 
-function QueueAdvance({ content }){
+function QueueAdvance({ content: queue }){
+    const { timeslots } = queue;
 
-    content.advanceTimes = [ [1682344800, 1800], [1682346600, 1800], [1682353800, 1800], [1682355600, 1800], [1682357400, 1800], [1682359200, 43200] ];
-
-    const [ selectedSlot, setSelectedSlot ] = useState( content.advanceTimes[0] );
+    const [ selectedSlot, setSelectedSlot ] = useState( timeslots[0]?.id );
     const [ overflowHidden, setOverflowHidden ] = useState( true );
 
     const overflowLimit = 4;
@@ -125,9 +130,9 @@ function QueueAdvance({ content }){
     const formatTime = ( unix ) => new Date( unix * 1000 ).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
 
     let selectedInOverflow = true;
-    const timeSlots = content.advanceTimes.map(( slot, index ) => {
+    const $timeslots = timeslots.map(( { id, startTime, duration }, index ) => {
         const inOverflow = index >= overflowLimit;
-        const selected = selectedSlot[0] === slot[0];
+        const selected = selectedSlot === id;
         if( selected && !inOverflow ) selectedInOverflow = false;
 
         if( overflowHidden ){
@@ -135,26 +140,31 @@ function QueueAdvance({ content }){
             if( index+1 == overflowLimit && selectedInOverflow ) return; // hide last slot if selected slot is in overflow
         }
 
-        const [ startUnix, deltaUnix ] = slot;
+        const startStr = formatTime( startTime );
+        const endStr = formatTime( startTime + duration );
 
-        const startTime = formatTime(startUnix);
-        const endTime = formatTime(startUnix + deltaUnix);
-
-        const selectSlot = () => setSelectedSlot( slot );
+        const selectSlot = () => setSelectedSlot( id );
 
         const classes = `${styles.timeSlot} ${selected ? styles.selected : ''}`;
 
-        return <li key={`${startUnix}-${index}`} className={classes} onClick={selectSlot}>{startTime} - {endTime}</li>
+        return <li key={id} className={classes} onClick={selectSlot}>{startStr} - {endStr}</li>
     });
+
+    // Book Ticket Button
+    const bookTicket = async () => {
+        if( !selectedSlot ) return;
+
+        const res = await api.bookTicket( queue.id, selectedSlot );
+    }
 
     return (
         <>
         <LayoutGroup centreContent={true}>
             <h3>Entry Time</h3>
             <ul className={styles.timeSlots}>
-                { timeSlots }
+                { $timeslots }
             </ul>
-            { content.advanceTimes.length > overflowLimit &&
+            { timeslots.length > overflowLimit &&
                 <div className={styles.overflow} onClick={() => setOverflowHidden(!overflowHidden)}>
                     { overflowHidden
                     ? <><p>show more</p><HiOutlineArrowSmallDown/></>
@@ -162,10 +172,11 @@ function QueueAdvance({ content }){
                     }
                 </div>
             }
+            { timeslots.length == 0 && <p className={styles.noSlots}>no times available</p> }
         </LayoutGroup>
         <Gap/>
         <LayoutGroup>
-            <Button>Book Ticket</Button>
+            <Button onClick={bookTicket}>Book Ticket</Button>
         </LayoutGroup>
         </>
     );

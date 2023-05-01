@@ -89,3 +89,11 @@ export async function getQueue( id ){
 export async function getGroup( id ){
     return await fetchApi( `/get/group/${id}` );
 }
+
+export async function joinQueue( id ){
+    return await fetchApi( `/join/queue/${id}/standby`, 'POST' );
+}
+
+export async function bookTicket( queueID, slotID ){
+    return await fetchApi( `/join/queue/${queueID}/advance/${slotID}`, 'POST' );
+}

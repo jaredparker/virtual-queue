@@ -1,4 +1,6 @@
 
+import dayjs from 'dayjs';
+
 import mongoose from 'mongoose';
 import { every } from '../lib/enums.js';
 
@@ -83,9 +85,11 @@ const queueSchema = new mongoose.Schema({
 });
 
 queueSchema.methods.export = function(){
+    const now = dayjs()
+
     return {
         type: 'queue',
-        id: this.id,
+        id: this._id,
         name: this.name,
         category: this.category,
         location: this.location,
@@ -93,7 +97,12 @@ queueSchema.methods.export = function(){
         waitTimes: [
             { name: 'Virtual', minutes: 54 },
             { name: 'Physical', minutes: 3 }
-        ]
+        ],
+        timeslots: this.timeslots.slots.filter( slot => dayjs.unix(slot.startTime-slot.duration).isAfter(now) ).map( slot => ({
+            id: slot._id,
+            startTime: slot.startTime,
+            duration: slot.duration,
+        })),
     };
 }
 
