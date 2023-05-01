@@ -18,7 +18,6 @@ router.use( '/search', await require('./routes/search.js') );
 router.use( '/get', await require('./routes/get.js') );
 router.use( '/create', auth.roles( user_roles.ADMIN ), await require('./routes/create.js') );
 
-router.use( '/queues', await require('./routes/queues.js') );
 //router.use( '/tickets', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD ), await require('./routes/auth.js') );
 
 export default router;
