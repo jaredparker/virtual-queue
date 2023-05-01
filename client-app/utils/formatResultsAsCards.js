@@ -8,7 +8,7 @@ export default function formatResultsAsCards( data=[] ){
         const card = {
             id: item.id,
             title: item.name,
-            subtitle: item.waitTime,
+            subtitle: item.waitTimes ? `est. ${item.waitTimes.reduce(( acc, curr ) => acc + curr.minutes, 0)} minutes wait time` : '',
             image: item.bannerImage,
         }
         if( item.type === 'group' ) card.link = `/search/group/${item.id}`;

@@ -74,18 +74,18 @@ export async function register( email, password ){
 
 // - Queues
 
-export async function getQueues(){
-    return await fetchApi( '/queues/get' );
+export async function searchQueues( directory='' ){
+    return await fetchApi( `/search/directory/${directory}` );
 }
 
-export async function getQueuesQuery( query ){
-    return await fetchApi( `/queues/query/${query}` );
+export async function searchQueuesQuery( query ){
+    return await fetchApi( `/search/all?q=${query}` );
 }
 
 export async function getQueue( id ){
-    return await fetchApi( `/queues/get/queue/${id}` );
+    return await fetchApi( `/get/queue/${id}` );
 }
 
 export async function getGroup( id ){
-    return await fetchApi( `/queues/get/group/${id}` );
+    return await fetchApi( `/get/group/${id}` );
 }

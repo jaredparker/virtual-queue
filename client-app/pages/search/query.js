@@ -24,8 +24,8 @@ export default function QueryPage(){
 
     const router = useRouter();
     
-    const [ data, fetchData ] = useApi( q => api.getQueuesQuery(q), res => formatResultsAsCards( res.data ), false ); // No auto Fetch
-    const [ query, setQuery ] = useState( '' );
+    const [ data, fetchData ] = useApi( q => api.searchQueuesQuery(q), res => formatResultsAsCards( res.data.results ), false ); // No auto Fetch
+    const [ query, setQuery ] = useState('');
 
     const normalise = q => q.trim().toLowerCase();
     const isEmpty = q => normalise(q) === '';

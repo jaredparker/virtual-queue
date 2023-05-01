@@ -21,7 +21,7 @@ import * as Icons from '@/components/Icons';
 
 export default function SearchPage(){
 
-    const [ data, fetchData ] = useApi( api.getQueues, res => formatResultsAsCards( res.data ) ); // Auto Fetch
+    const [ data, fetchData ] = useApi( api.searchQueues, res => formatResultsAsCards( res.data.results ) ); // Auto Fetch
 
     // - Tabs
     const [ QueueTab, setQueueTab, QueueNavigator ] = useTabs([

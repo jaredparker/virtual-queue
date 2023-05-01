@@ -26,12 +26,12 @@ export default function GroupPage(){
 
     const formatResponse = res => {
         return {
-            group: res.data,
-            cardGroups: formatResultsAsCards( res.data.children )
+            group: res.data.directory,
+            cardGroups: formatResultsAsCards( res.data.results )
         }
     }
     
-    const [ data, fetchData ] = useApi( () => api.getGroup( groupID ), formatResponse, false ); // No initial fetch
+    const [ data, fetchData ] = useApi( () => api.searchQueues( groupID ), formatResponse, false ); // No initial fetch
     
     useEffect(() => { if( router.isReady ){ fetchData(); }
     }, [ router.asPath, router.isReady ]) // only run at inital render
