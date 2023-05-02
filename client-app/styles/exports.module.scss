@@ -1,0 +1,11 @@
+
+@import '@/styles/abstracts/variables';
+
+// - Export
+
+:export {
+    paddTiny: $padd-tiny;
+    paddXSmall: $padd-xsmall;
+    paddSmall: $padd-small;
+    paddLarge: $padd-large;
+}

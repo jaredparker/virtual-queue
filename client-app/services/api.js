@@ -90,10 +90,16 @@ export async function getGroup( id ){
     return await fetchApi( `/get/group/${id}` );
 }
 
+// - Tickets
+
 export async function joinQueue( id ){
     return await fetchApi( `/join/queue/${id}/standby`, 'POST' );
 }
 
 export async function bookTicket( queueID, slotID ){
     return await fetchApi( `/join/queue/${queueID}/advance/${slotID}`, 'POST' );
+}
+
+export async function getTickets(){
+    return await fetchApi( `/get/tickets` );
 }

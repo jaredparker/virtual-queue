@@ -33,7 +33,22 @@ ticketSchema.methods.export = function(){
     return {
         type: 'ticket',
         id: this._id,
+        ticketType: this.type,
     };
+}
+
+ticketSchema.methods.fullExport = async function(){
+    await this.populate( 'queue' );
+
+    const timeslot = this.queue.timeslots.slots.find( s => s._id.equals( this.timeslot ) );
+
+    return {
+        type: 'ticket',
+        id: this._id,
+        ticketType: this.type,
+        queue: this.queue.export(),
+        timeslot: timeslot ? timeslot.export() : null,
+    }
 }
 
 export default mongoose.model( 'ticket', ticketSchema );

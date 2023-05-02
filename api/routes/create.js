@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post( '/group', async ( req, res ) => {
 
-        const { name, bannerImage, parentGroupID } = req.body;
+        const { name, category, bannerImage, parentGroupID } = req.body;
         if( !name ) return res.missingParams( { name } );
 
         let parentGroup;
@@ -23,7 +23,7 @@ router.post( '/group', async ( req, res ) => {
             catch( err ){ return res.failed( `Parent Group '${parentGroupID}' doesn't exist` ); }
         }
 
-        const groupData = { name, bannerImage };
+        const groupData = { name, bannerImage, category };
         if( parentGroup ) groupData.parent = parentGroup._id;
 
         const group = new Group(groupData);
@@ -36,7 +36,7 @@ router.post( '/group', async ( req, res ) => {
 
 router.post( '/queue', async ( req, res ) => {
 
-        const { name, bannerImage, parentGroupID, slotGenerators } = req.body;
+        const { name, category, bannerImage, parentGroupID, slotGenerators } = req.body;
         if( !name ) return res.missingParams( { name } );
 
         // Ensure parent group exists
@@ -47,7 +47,7 @@ router.post( '/queue', async ( req, res ) => {
         }
 
         // Build queue
-        const queueData = { name, bannerImage, timeslots: {} };
+        const queueData = { name, bannerImage, category, timeslots: {} };
         if( slotGenerators ){
             // TODO: Validate slotGenerators
             queueData.timeslots.generators = slotGenerators;

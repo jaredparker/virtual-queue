@@ -1,0 +1,28 @@
+
+@import '@/styles/abstracts/variables';
+
+.carousel {
+
+    flex: 1;
+    height: 1px;
+
+    /* .slick-list */
+    > div {
+        /* swipe interact on whole empty area*/
+        height: 100%;
+    }
+
+    /* .slick-track  */
+    > div > div {
+        height: 100%;
+
+        /* CenterMode aligns to left fix */
+        margin-left: $padd-small;
+
+        /* Ticket container*/
+        > div > div {
+            height: 100%;
+            padding: $padd-tiny;
+        }
+    }
+}

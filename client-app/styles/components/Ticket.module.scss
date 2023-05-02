@@ -1,0 +1,47 @@
+
+@import '@/styles/abstracts/variables';
+@import '@/styles/abstracts/mixins';
+
+.ticket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $padd-tiny;
+
+    max-height: 100%;
+    overflow-y: auto;
+    text-align: center;
+
+    padding: $padd-large $padd-small;
+
+    @include reset-border;
+    @include image-overlay;
+
+    color: $color-secondary-foreground;
+}
+
+.timeslot {
+    padding: $padd-tiny $padd-small;
+    border-radius: $padd-small;
+
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+    text-shadow: none;
+
+    color: $color-primary;
+    background-color: $color-primary-background;
+}
+
+.QRContainer {
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 1/1;
+
+    margin: $padd-large 0;
+    padding: $padd-large;
+
+    @include reset-border;
+    background-color: $color-background;
+
+    overflow: hidden;
+}

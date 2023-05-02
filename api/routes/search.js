@@ -63,7 +63,7 @@ router.get( '/all', async ( req, res ) => {
     // Categorise results
     const categoryAsParentTree = async model => {
         const data = model.export();
-        const tree = [];
+        const tree = model.category ? [ model.category ] : [];
 
         const getGroupParents = async group => {
             await group.populate('parent');

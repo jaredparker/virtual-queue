@@ -20,6 +20,21 @@ const previewTicket = new mongoose.Schema({
     }],
 });
 
+const slot = new mongoose.Schema({
+    startTime: Number,
+    duration: Number,
+    maxTickets: Number,
+    tickets: [previewTicket]
+});
+
+slot.methods.export = function(){
+    return {
+        id: this._id,
+        startTime: this.startTime,
+        duration: this.duration,
+    };
+}
+
 const queueSchema = new mongoose.Schema({
 
     // ~ MongoDB automatically creates an _id field ~
@@ -58,12 +73,7 @@ const queueSchema = new mongoose.Schema({
 
     timeslots: {
 
-        slots: [{
-            startTime: Number,
-            duration: Number,
-            maxTickets: Number,
-            tickets: [previewTicket]
-        }],
+        slots: [slot],
 
         generators: [{
             every: { type: String, enum: every, default: every.DAY },
