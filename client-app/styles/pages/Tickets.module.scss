@@ -6,6 +6,9 @@
     flex: 1;
     height: 1px;
 
+    /* extend to edges */
+    padding: 0;
+
     /* .slick-list */
     > div {
         /* swipe interact on whole empty area*/

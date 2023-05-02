@@ -33,15 +33,9 @@
 }
 
 .QRContainer {
-    display: flex;
-    flex-direction: column;
-    aspect-ratio: 1/1;
-
     margin: $padd-large 0;
     padding: $padd-large;
 
     @include reset-border;
     background-color: $color-background;
-
-    overflow: hidden;
 }

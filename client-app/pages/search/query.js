@@ -43,7 +43,7 @@ export default function QueryPage(){
             if( isEmpty( q ) ) return;
 
             // Update url
-            router.replace({
+            router.push({
                 query: { ...router.query, q: normalise(q) }
             }, undefined, { shallow: true } );
 
@@ -52,10 +52,12 @@ export default function QueryPage(){
         }, isEmpty(q) ? 0 : 300 );
     }
 
+    const [ goingBack, setGoingBack ] = useState( false );
     const onBlur = e => {
         const q = e.target.value;
         if( !isEmpty( q ) ) return;
 
+        setGoingBack( true ); // ~ to prevent going back twice (back for blur, back for button press) (hacky fix)
         router.back();
     }
 
@@ -77,7 +79,7 @@ export default function QueryPage(){
             
             <LayoutWrapper fillHeight={true}>
                 
-                <Header hideSearch coloredIcons>
+                <Header hideBack={goingBack} hideSearch coloredIcons>
                     <TextInput type={'search'} autoFocus onChange={onChange} onBlur={onBlur} defaultValue={query}>
                         Search
                     </TextInput>

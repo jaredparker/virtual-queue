@@ -10,8 +10,13 @@ import styles from '@/styles/components/Icons.module.scss';
 export function Back({ title, subtitle }){
     const router = useRouter();
 
+    const goBack = () => {
+        console.log( router );
+        router.back();
+    }
+
     return (
-        <button className={styles.button} onClick={ () => router.back() }>
+        <button className={styles.button} onClick={goBack}>
             <HiOutlineArrowSmallLeft/>
         </button>
     );

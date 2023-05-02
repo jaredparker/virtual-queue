@@ -79,20 +79,19 @@ export default function TicketsPage(){
                 <title>Scan</title>
             </Head>
             
-            <LayoutWrapper>            
+            <LayoutWrapper fillHeight>   
                 <Header hideBack hideSearch coloredIcons>
                     <TicketsNavigator/>
                 </Header>
+
+                <Content data={data} noContentMessage="You have no Tickets">
+                    { content =>
+                    <Slider ref={slider => setCarousel(slider)} {...slickSettings}>
+                        { content.map(( item, index ) => <Ticket key={item.id} {...item}/> )}
+                    </Slider>
+                    }
+                </Content>
             </LayoutWrapper>
-
-
-            <Content data={data} noContentMessage="You have no Tickets">
-                { content =>
-                <Slider ref={slider => setCarousel(slider)} {...slickSettings}>
-                    { content.map(( item, index ) => <Ticket key={item.id} {...item}/> )}
-                </Slider>
-                }
-            </Content>
 
             <NavBar/>
         </>

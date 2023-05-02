@@ -35,7 +35,7 @@ export default function Ticket({ id, queue, timeslot }){
             <p>{ dateStr }</p>
             { timeslotStr && <p className={styles.timeslot}>{ timeslotStr }</p> }
             <div className={styles.QRContainer}>
-                <QRCode value={QRValue} style={{ width: '100%' }}/>
+                <QRCode value={QRValue} style={{ width: '100%', height: 'auto' }}/>
             </div>
         </div>
     )
