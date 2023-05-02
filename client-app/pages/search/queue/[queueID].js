@@ -25,6 +25,8 @@ import styles from '@/styles/pages/Queue.module.scss';
 import Button from '@/components/Button';
 import Gap from '@/components/Gap';
 
+const ticketsRedirect = `/tickets`;
+
 export default function QueuePage(){
 
     // - Data Fetching
@@ -78,6 +80,7 @@ export default function QueuePage(){
 
 function QueueNow({ content: queue }){
     const { waitTimes } = queue;
+    const router = useRouter();
 
     const $waitTimes = [];
     waitTimes.forEach( ( { name, minutes }, index ) => {
@@ -98,6 +101,10 @@ function QueueNow({ content: queue }){
     // Join Queue
     const joinQueue = async () => {
         const res = await api.joinQueue( queue.id );
+        if( res.success ){
+            router.push( `${ticketsRedirect}?t=${res.data.id}` );
+            await new Promise(() => {}); // Keep button loading until redirect   
+        }
     }
 
     return (
@@ -121,6 +128,7 @@ function QueueNow({ content: queue }){
 
 function QueueAdvance({ content: queue }){
     const { timeslots } = queue;
+    const router = useRouter();
 
     const [ selectedSlot, setSelectedSlot ] = useState( timeslots[0]?.id );
     const [ overflowHidden, setOverflowHidden ] = useState( true );
@@ -155,6 +163,10 @@ function QueueAdvance({ content: queue }){
         if( !selectedSlot ) return;
 
         const res = await api.bookTicket( queue.id, selectedSlot );
+        if( res.success ){
+            router.push( `${ticketsRedirect}?t=${res.data.id}` );
+            await new Promise(() => {}); // Keep button loading until redirect   
+        }
     }
 
     return (

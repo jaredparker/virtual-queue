@@ -46,6 +46,11 @@ async function checkActiveTicket( req, res, next ) {
 
 router.post( `/queue/:queueID/${ticket_types.STANDBY}`, checkActiveTicket, async ( req, res ) => {
 
+    // Check if user currently in any standby queue
+    const standbyAll = await Queue.findOne({ 'standby.tickets.users': req.userID });
+    if( standbyAll ) return res.failed( `User '${req.userID}' already has a ticket in a standby queue '${standbyAll._id}'` );
+
+
     const ticket = new Ticket({
         type: ticket_types.STANDBY,
         queue: req.queue._id,

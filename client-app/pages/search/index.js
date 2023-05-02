@@ -25,8 +25,9 @@ export default function SearchPage(){
 
     // - Tabs
     const [ QueueTab, setQueueTab, QueueNavigator ] = useTabs([
-        { name: 'Park Passes', component: '' },
-        { name: 'Ride Tickets', component: '' }
+        // { name: 'Park Passes', component: '' },
+        // { name: 'Ride Tickets', component: '' }
+        { name: 'Queues', component: '' },
     ]);
 
     return (
