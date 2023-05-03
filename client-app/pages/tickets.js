@@ -76,7 +76,7 @@ export default function TicketsPage(){
     return (
         <>
             <Head>
-                <title>Scan</title>
+                <title>My Tickets</title>
             </Head>
             
             <LayoutWrapper fillHeight>   

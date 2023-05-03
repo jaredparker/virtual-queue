@@ -18,7 +18,6 @@ router.use( '/create', auth.roles( user_roles.ADMIN ), await require('./routes/c
 router.use( '/search', await require('./routes/search.js') );
 router.use( '/get', await require('./routes/get.js') );
 router.use( '/join', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, user_roles.ADMIN ), await require('./routes/join.js') );
-
-//router.use( '/tickets', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD ), await require('./routes/auth.js') );
+router.use( '/trigger', auth.roles( user_roles.ADMIN ), await require('./routes/trigger.js') );
 
 export default router;

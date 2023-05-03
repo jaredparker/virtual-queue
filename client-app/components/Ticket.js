@@ -14,15 +14,15 @@ import QRCode from 'react-qr-code';
 // Styles
 import styles from '@/styles/components/Ticket.module.scss';
 
-export default function Ticket({ id, queue, timeslot }){
+export default function Ticket({ id, ticketType, queue, timeslot }){
 
     const date = timeslot ? dayjs.unix( timeslot.startTime ) : dayjs();
     const dateStr = date.format('dddd, wo MMM');
 
     const estWaitTime = queue.waitTimes.find( wt => wt.name=='Virtual' );
 
-    const timeslotStr = timeslot
-    ? `${dayjs.unix( timeslot.startTime ).format('HH:mm')} - ${dayjs.unix( timeslot.startTime + timeslot.duration ).format('hh:mm')}`
+    const timeslotStr = ticketType == 'advance'
+    ? timeslot==null ? 'No longer available' : `${dayjs.unix( timeslot.startTime ).format('HH:mm')} - ${dayjs.unix( timeslot.startTime + timeslot.duration ).format('HH:mm')}`
     : estWaitTime ? `est. ${estWaitTime.minutes} minutes`
     : null;
 

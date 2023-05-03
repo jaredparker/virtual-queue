@@ -48,7 +48,7 @@ router.get( '/tickets', auth.roles( user_roles.ANONYMOUS, user_roles.STANDARD, u
     responseData.sort(( a, b ) => {
         return ( a.ticketType == ticket_types.ADVANCE )
             ? ( a.ticketType == b.ticketType )
-            ? dayjs.unix( a.timeslot.startTime ).diff( dayjs.unix( b.timeslot.startTime ) )
+            ? ( a.timeslot==null || b.timeslot==null ) ? 0 : dayjs.unix( a.timeslot.startTime ).diff( dayjs.unix( b.timeslot.startTime ) )
             :  1  // b is standby
             : -1; // a is standby
     });

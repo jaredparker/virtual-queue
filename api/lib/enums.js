@@ -18,4 +18,8 @@ export const ticket_types = {
     ADVANCE: 'advance',
     STANDBY: 'standby'
 }
-    
+
+export const physical_queue_types = {
+    ...ticket_types,
+    MERGED: 'merged'
+}
