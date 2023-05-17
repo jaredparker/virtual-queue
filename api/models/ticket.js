@@ -27,6 +27,7 @@ const ticketSchema = new mongoose.Schema({
         required: true
     }],
 
+    usedAt: Number,
 });
 
 ticketSchema.methods.export = function(){
